@@ -54,6 +54,19 @@ class MiniMaxPlayerVersionsTest {
          */
     }
 
+    @org.junit.jupiter.api.Test
+    void benchMarkTestV5() {
+        final var depth = 8;
+        final var testRounds = 50;
+        Player testPlayer = new MiniMaxPlayerV5('X', board, depth);
+        testMiniMaxPlayer(testPlayer, testRounds);
+        /*
+        8 depth, 100 rounds: 191ms
+        8 depth, 100 rounds: 204ms
+        8 depth, 100 rounds: 198ms
+         */
+    }
+
     private void testMiniMaxPlayer(Player testPlayer, int testRounds) {
         // Arrange
         final var column = 7;
