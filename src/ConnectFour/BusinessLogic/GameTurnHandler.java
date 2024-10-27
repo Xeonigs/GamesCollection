@@ -1,5 +1,7 @@
 package src.ConnectFour.BusinessLogic;
 
+import src.ConnectFour.BusinessLogic.Players.Player;
+
 public class GameTurnHandler implements TurnHandler {
     private Player player1;
     private Player player2;

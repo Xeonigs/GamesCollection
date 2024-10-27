@@ -1,5 +1,6 @@
 package src.ConnectFour.BusinessLogic;
 
+import src.ConnectFour.BusinessLogic.Players.Player;
 import src.ConnectFour.ConnectFour;
 
 public class GameState implements State {

@@ -1,5 +1,7 @@
 package src.ConnectFour.BusinessLogic;
 
+import src.ConnectFour.BusinessLogic.Players.Player;
+
 import java.util.Stack;
 
 public class GameBoardHandler implements BoardHandler {

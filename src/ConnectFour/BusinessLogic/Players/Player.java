@@ -1,4 +1,4 @@
-package src.ConnectFour.BusinessLogic;
+package src.ConnectFour.BusinessLogic.Players;
 
 public interface Player {
     int getMove();

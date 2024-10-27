@@ -1,19 +1,21 @@
-package src.ConnectFour.BusinessLogic;
+package src.ConnectFour.BusinessLogic.Players;
 
+import src.ConnectFour.BusinessLogic.*;
 import src.ConnectFour.ConnectFour;
 
-public class ComputerPlayer implements Player {
+public class MiniMaxPlayerV2 implements Player {
     private final char symbol;
     private final int depth;
     private final Board board;
     private Board boardCopy;
-    private double[/*depth*/][/*column*/] evaluationTable;
+    private double[/*column*/] evaluation;
+    private double[/*depth*/] depthsEvaluation;
     private BoardHandler boardHandler;
     private State state;
     private BoardHeuristic boardHeuristic;
     private Player opponent;
 
-    public ComputerPlayer(char symbol, Board board, int depth) {
+    public MiniMaxPlayerV2(char symbol, Board board, int depth) {
         if (depth < 1) {
             throw new IllegalArgumentException("Depth must be at least 1");
         }
@@ -35,7 +37,8 @@ public class ComputerPlayer implements Player {
 
     private void newSetup() {
         this.boardCopy = board.clone();
-        this.evaluationTable = new double[depth][ConnectFour.COLUMN];
+        this.evaluation = new double[ConnectFour.COLUMN];
+        this.depthsEvaluation = new double[depth];
         this.boardHandler = new GameBoardHandler(boardCopy);
         this.state = new GameState(boardCopy);
         this.boardHeuristic = new GameBoardHeuristic(boardCopy, state, this, opponent);
@@ -43,31 +46,36 @@ public class ComputerPlayer implements Player {
 
     private void clearSetup() {
         this.boardCopy = null;
-        this.evaluationTable = null;
+        this.evaluation = null;
+        this.depthsEvaluation = null;
         this.boardHandler = null;
         this.boardHeuristic = null;
     }
 
     private int minimax(Board board) {
         int depth = 0;
-        for (int i = 0; i < evaluationTable[depth].length; i++) {
+        long startTime = System.nanoTime();
+        for (int i = 0; i < evaluation.length; i++) {
             if (boardHandler.isMoveValid(i)) {
                 boardHandler.makeMove(this, i);
-                evaluationTable[depth][i] = min(board, depth + 1);
+                evaluation[i] = min(board, depth + 1);
                 boardHandler.undoMove();
             } else {
-                evaluationTable[depth][i] = -1;
+                evaluation[i] = -1;
             }
         }
+        long endTime = System.nanoTime();
+        long duration = (endTime - startTime);
+        System.out.println("Time: " + duration / 1000000 + "ms");
 
         // Area of improvement: choose the shortest path to win
         int indexOfHighestValue = 0;
-        for (int i = 0; i < evaluationTable[depth].length; i++) {
-            if (evaluationTable[depth][i] > evaluationTable[depth][indexOfHighestValue]) {
+        for (int i = 0; i < evaluation.length; i++) {
+            if (evaluation[i] > evaluation[indexOfHighestValue]) {
                 indexOfHighestValue = i;
             }
         }
-        System.out.println("Computer move (" + getSymbol() + "): " + (indexOfHighestValue + 1) + " (" + evaluationTable[depth][indexOfHighestValue] + ")");
+        System.out.println("Computer move (" + getSymbol() + "): " + (indexOfHighestValue + 1) + " (" + evaluation[indexOfHighestValue] + ")");
         return indexOfHighestValue;
     }
 
@@ -76,26 +84,23 @@ public class ComputerPlayer implements Player {
             return boardHeuristic.evaluateBoard();
         }
 
-        for (int i = 0; i < evaluationTable[depth].length; i++) {
+        depthsEvaluation[depth] = 2;
+        for (int i = 0; i < evaluation.length; i++) {
             if (boardHandler.isMoveValid(i)) {
                 boardHandler.makeMove(opponent, i);
-                evaluationTable[depth][i] = max(board, depth + 1);
+                final var value = max(board, depth + 1);
                 boardHandler.undoMove();
-                if (evaluationTable[depth][i] == 0) {
-                    return evaluationTable[depth][i];
+
+                if (value == 0) {
+                    return value;
                 }
-            } else {
-                evaluationTable[depth][i] = 2;
+                if (value < depthsEvaluation[depth]) {
+                    depthsEvaluation[depth] = value;
+                }
             }
         }
 
-        double lowestValue = evaluationTable[depth][0];
-        for (int i = 0; i < evaluationTable[depth].length; i++) {
-            if (evaluationTable[depth][i] < lowestValue) {
-                lowestValue = evaluationTable[depth][i];
-            }
-        }
-        return lowestValue;
+        return depthsEvaluation[depth];
     }
 
     private double max(Board board, int depth) {
@@ -103,27 +108,23 @@ public class ComputerPlayer implements Player {
             return boardHeuristic.evaluateBoard();
         }
 
-        for (int i = 0; i < evaluationTable[depth].length; i++) {
+        depthsEvaluation[depth] = -1;
+        for (int i = 0; i < evaluation.length; i++) {
             if (boardHandler.isMoveValid(i)) {
-                evaluationTable[depth][i] = 0;
                 boardHandler.makeMove(this, i);
-                evaluationTable[depth][i] = min(board, depth + 1);
+                final var value = min(board, depth + 1);
                 boardHandler.undoMove();
-                if (evaluationTable[depth][i] == 1) {
-                    return evaluationTable[depth][i];
+
+                if (value == 1) {
+                    return value;
                 }
-            } else {
-                evaluationTable[depth][i] = -1;
+                if (value > depthsEvaluation[depth]) {
+                    depthsEvaluation[depth] = value;
+                }
             }
         }
 
-        double highestValue = evaluationTable[depth][0];
-        for (int i = 0; i < evaluationTable[depth].length; i++) {
-            if (evaluationTable[depth][i] > highestValue) {
-                highestValue = evaluationTable[depth][i];
-            }
-        }
-        return highestValue;
+        return depthsEvaluation[depth];
     }
 
     @Override

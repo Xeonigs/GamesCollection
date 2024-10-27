@@ -1,5 +1,7 @@
-package src.ConnectFour.BusinessLogic;
+package src.ConnectFour.BusinessLogic.Players;
 
+import src.ConnectFour.BusinessLogic.BoardHandler;
+import src.ConnectFour.BusinessLogic.Players.Player;
 import src.ConnectFour.ConnectFour;
 import src.ConnectFour.UI.InputHandler;
 

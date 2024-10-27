@@ -1,6 +1,10 @@
 package src.ConnectFour;
 
 import src.ConnectFour.BusinessLogic.*;
+import src.ConnectFour.BusinessLogic.Players.MiniMaxPlayer;
+import src.ConnectFour.BusinessLogic.Players.HumanPlayer;
+import src.ConnectFour.BusinessLogic.Players.MiniMaxPlayerV2;
+import src.ConnectFour.BusinessLogic.Players.Player;
 import src.ConnectFour.UI.*;
 
 public class ConnectFour {
@@ -16,8 +20,8 @@ public class ConnectFour {
         State state = new GameState(board);
 
         //Player player1 = new HumanPlayer('X', inputHandler, boardHandler);
-        Player player2 = new HumanPlayer('O', inputHandler, boardHandler);
-        Player player1 = new ComputerPlayer('X', board, 8);
+        Player player1 = new MiniMaxPlayer('X', board, 7);
+        Player player2 = new MiniMaxPlayerV2('O', board, 7);
         //Player player2 = new ComputerPlayer('O', board, 7);
         player1.setOpponent(player2);
         player2.setOpponent(player1);

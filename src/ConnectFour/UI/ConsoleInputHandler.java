@@ -1,6 +1,6 @@
 package src.ConnectFour.UI;
 
-import src.ConnectFour.BusinessLogic.Player;
+import src.ConnectFour.BusinessLogic.Players.Player;
 
 import java.util.Optional;
 

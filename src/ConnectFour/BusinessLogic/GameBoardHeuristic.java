@@ -1,5 +1,6 @@
 package src.ConnectFour.BusinessLogic;
 
+import src.ConnectFour.BusinessLogic.Players.Player;
 import src.ConnectFour.ConnectFour;
 
 import java.util.function.Predicate;
@@ -22,7 +23,7 @@ public class GameBoardHeuristic implements BoardHeuristic {
 
     @Override
     public double evaluateBoard() {
-        callCounter++;
+        //callCounter++;
         if (!state.isRunning()) {
             final var winner = state.getWinner();
             if (winner == player) {
@@ -43,7 +44,7 @@ public class GameBoardHeuristic implements BoardHeuristic {
             return 0.5;
         }
 
-        System.out.println("Call counter: " + callCounter);
+        //System.out.println("Call counter: " + callCounter);
         return calculateValues(valueOwnPlayer, valueOtherPlayer);
     }
 
