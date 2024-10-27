@@ -3,7 +3,11 @@ package src.ConnectFour.BusinessLogic.Players;
 import src.ConnectFour.BusinessLogic.*;
 import src.ConnectFour.ConnectFour;
 
-public class MiniMaxPlayerV2 implements Player {
+// Area of improvement:
+// - remember state of the board after each move and safe the evaluation of the board
+// - board symmetry
+// - choose the shortest path to win
+public class MiniMaxPlayerV4 implements Player {
     private final char symbol;
     private final int depth;
     private final Board board;
@@ -15,7 +19,7 @@ public class MiniMaxPlayerV2 implements Player {
     private BoardHeuristic boardHeuristic;
     private Player opponent;
 
-    public MiniMaxPlayerV2(char symbol, Board board, int depth) {
+    public MiniMaxPlayerV4(char symbol, Board board, int depth) {
         if (depth < 1) {
             throw new IllegalArgumentException("Depth must be at least 1");
         }
@@ -58,14 +62,13 @@ public class MiniMaxPlayerV2 implements Player {
         for (int i = 0; i < evaluation.length; i++) {
             if (boardHandler.isMoveValid(i)) {
                 boardHandler.makeMove(this, i);
-                evaluation[i] = min(board, depth + 1);
+                evaluation[i] = min(board, depth + 1, -1);
                 boardHandler.undoMove();
             } else {
                 evaluation[i] = -1;
             }
         }
-        long endTime = System.nanoTime();
-        long duration = (endTime - startTime);
+        long duration = System.nanoTime() - startTime;
         //System.out.println("Time: " + duration / 1000000 + "ms");
 
         // Area of improvement: choose the shortest path to win
@@ -78,8 +81,8 @@ public class MiniMaxPlayerV2 implements Player {
         System.out.println("Computer move (" + getSymbol() + "): " + (indexOfHighestValue + 1) + " (" + evaluation[indexOfHighestValue] + ")");
         return indexOfHighestValue;
     }
-
-    private double min(Board board, int depth) {
+    // the board, the current depth and the best value for the last depth
+    private double min(Board board, int depth, double bestValue) {
         if (depth == this.depth || !state.isRunning()) {
             return boardHeuristic.evaluateBoard();
         }
@@ -88,10 +91,10 @@ public class MiniMaxPlayerV2 implements Player {
         for (int i = 0; i < evaluation.length; i++) {
             if (boardHandler.isMoveValid(i)) {
                 boardHandler.makeMove(opponent, i);
-                final var value = max(board, depth + 1);
+                final var value = max(board, depth + 1, depthsEvaluation[depth]);
                 boardHandler.undoMove();
 
-                if (value == 0) {
+                if (value < bestValue || value == 0) {
                     return value;
                 }
                 if (value < depthsEvaluation[depth]) {
@@ -103,7 +106,7 @@ public class MiniMaxPlayerV2 implements Player {
         return depthsEvaluation[depth];
     }
 
-    private double max(Board board, int depth) {
+    private double max(Board board, int depth, double worstValue) {
         if (depth == this.depth || !state.isRunning()) {
             return boardHeuristic.evaluateBoard();
         }
@@ -112,10 +115,10 @@ public class MiniMaxPlayerV2 implements Player {
         for (int i = 0; i < evaluation.length; i++) {
             if (boardHandler.isMoveValid(i)) {
                 boardHandler.makeMove(this, i);
-                final var value = min(board, depth + 1);
+                final var value = min(board, depth + 1, depthsEvaluation[depth]);
                 boardHandler.undoMove();
 
-                if (value == 1) {
+                if (value > worstValue || value == 1) {
                     return value;
                 }
                 if (value > depthsEvaluation[depth]) {

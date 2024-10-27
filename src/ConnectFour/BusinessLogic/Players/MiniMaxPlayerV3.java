@@ -54,7 +54,6 @@ public class MiniMaxPlayerV3 implements Player {
 
     private int minimax(Board board) {
         int depth = 0;
-        long startTime = System.nanoTime();
         for (int i = 0; i < evaluation.length; i++) {
             if (boardHandler.isMoveValid(i)) {
                 boardHandler.makeMove(this, i);
@@ -64,9 +63,7 @@ public class MiniMaxPlayerV3 implements Player {
                 evaluation[i] = -1;
             }
         }
-        long endTime = System.nanoTime();
-        long duration = (endTime - startTime);
-        System.out.println("Time: " + duration / 1000000 + "ms");
+        //System.out.println("Time: " + duration / 1000000 + "ms");
 
         // Area of improvement: choose the shortest path to win
         int indexOfHighestValue = 0;
