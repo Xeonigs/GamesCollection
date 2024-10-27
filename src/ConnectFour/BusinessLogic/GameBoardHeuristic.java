@@ -22,14 +22,14 @@ public class GameBoardHeuristic implements BoardHeuristic {
     }
 
     @Override
-    public double evaluateBoard() {
+    public float evaluateBoard() {
         //callCounter++;
         if (!state.isRunning()) {
             final var winner = state.getWinner();
             if (winner == player) {
                 return 1;
             } else if (winner == null) {
-                return 0.5;
+                return 0.5f;
             } else {
                 return 0;
             }
@@ -41,14 +41,14 @@ public class GameBoardHeuristic implements BoardHeuristic {
         final var valueOtherPlayer = getEvaluationForDemandedPlayer(otherPlayerDemanded);
 
         if (valueOwnPlayer == 0 || valueOtherPlayer == 0) {
-            return 0.5;
+            return 0.5f;
         }
 
         //System.out.println("Call counter: " + callCounter);
         return calculateValues(valueOwnPlayer, valueOtherPlayer);
     }
 
-    private double calculateValues(int valueOwnPlayer, int valueOtherPlayer) {
+    private float calculateValues(int valueOwnPlayer, int valueOtherPlayer) {
         if (valueOwnPlayer > valueOtherPlayer) {
             // ownPlayer = 8
             // otherPlayer = 1
@@ -56,7 +56,7 @@ public class GameBoardHeuristic implements BoardHeuristic {
             // 0.125 / 2 = 0.0625
             // 0.5 - 0.0625 = 0.4375
             // 0.5 + 0.4375 = 0.9375
-            return 1 - (double) valueOtherPlayer / valueOwnPlayer / 2;
+            return 1 - (float) valueOtherPlayer / valueOwnPlayer / 2;
 
             // ownPlayer = 9
             // otherPlayer = 8
@@ -69,7 +69,7 @@ public class GameBoardHeuristic implements BoardHeuristic {
             // otherPlayer = 8
             // 1 / 8 = 0.125
             // 0.125 / 2 = 0.0625
-            return (double) valueOwnPlayer / valueOtherPlayer / 2;
+            return (float) valueOwnPlayer / valueOtherPlayer / 2;
 
             // ownPlayer = 8
             // otherPlayer = 9
