@@ -1,16 +1,18 @@
 package src.ConnectFour.BusinessLogic;
 
 import src.ConnectFour.BusinessLogic.Players.Player;
+import src.ConnectFour.ConnectFour;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class GameBoardHandler implements BoardHandler {
     private Board board;
-    private Stack<Integer> moves;
+    private Deque<Integer> moves;
 
     public GameBoardHandler(Board board) {
         this.board = board;
-        this.moves = new Stack<>();
+        this.moves = new ArrayDeque<>(ConnectFour.COLUMN * ConnectFour.ROW);
     }
 
     @Override
