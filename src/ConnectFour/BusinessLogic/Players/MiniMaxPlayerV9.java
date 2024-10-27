@@ -67,7 +67,6 @@ public class MiniMaxPlayerV9 implements Player {
     private int minimax(Board board) {
         int depth = 0;
         long startTime = System.nanoTime();
-        depthsEvaluation[depth] = -1;
         for (int i = 0; i < evaluation.length; i++) {
             if (boardHandler.isMoveValid(i)) {
                 boardHandler.makeMove(this, i);
@@ -77,7 +76,7 @@ public class MiniMaxPlayerV9 implements Player {
                     value = rememberedBoards.get(boardString);
                     boardHandler.undoMove();
                 } else {
-                    value = max(board, depth + 1, -1);
+                    value = min(board, depth + 1, -1);
                     rememberedBoards.put(boardString, value);
                     rememberedBoards.put(board.horizontallyMirroredToString(), value);
                     boardHandler.undoMove();
