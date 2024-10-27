@@ -16,6 +16,7 @@ class MiniMaxPlayerVersionsTest {
         /*
         6 depth, 10 rounds: 287ms
         6 depth, 10 rounds: 293ms
+        8 depth, 1 rounds: 6794ms
          */
     }
 
@@ -29,7 +30,6 @@ class MiniMaxPlayerVersionsTest {
         6 depth, 10 rounds: 300ms
         6 depth, 10 rounds: 289ms
         6 depth, 10 rounds: 311ms
-        8 depth, 1 rounds: 7138ms
          */
     }
 
@@ -64,6 +64,17 @@ class MiniMaxPlayerVersionsTest {
         8 depth, 100 rounds: 191ms
         8 depth, 100 rounds: 204ms
         8 depth, 100 rounds: 198ms
+         */
+    }
+
+    @org.junit.jupiter.api.Test
+    void benchMarkTestV6() {
+        final var depth = 10;
+        final var testRounds = 100;
+        Player testPlayer = new MiniMaxPlayerV6('X', board, depth);
+        testMiniMaxPlayer(testPlayer, testRounds);
+        /*
+        8 depth, 100 rounds: 111ms
          */
     }
 
