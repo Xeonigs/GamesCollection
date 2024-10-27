@@ -3,7 +3,7 @@ package src.ConnectFour.BusinessLogic.Players;
 import src.ConnectFour.BusinessLogic.*;
 import src.ConnectFour.ConnectFour;
 
-public class MiniMaxPlayer implements Player {
+public class MiniMaxPlayerV1 implements Player {
     private final char symbol;
     private final int depth;
     private final Board board;
@@ -14,7 +14,7 @@ public class MiniMaxPlayer implements Player {
     private BoardHeuristic boardHeuristic;
     private Player opponent;
 
-    public MiniMaxPlayer(char symbol, Board board, int depth) {
+    public MiniMaxPlayerV1(char symbol, Board board, int depth) {
         if (depth < 1) {
             throw new IllegalArgumentException("Depth must be at least 1");
         }
