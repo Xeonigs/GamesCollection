@@ -28,7 +28,7 @@ public class ComputerPlayer implements Player {
             throw new IllegalStateException("Opponent must be set before calling getMove()");
         }
         newSetup();
-        final var move = minimax(boardCopy, 0);
+        final var move = minimax(boardCopy);
         clearSetup();
         return move;
     }
@@ -37,7 +37,7 @@ public class ComputerPlayer implements Player {
         this.boardCopy = board.clone();
         this.evaluationTable = new double[depth][ConnectFour.COLUMN];
         this.boardHandler = new GameBoardHandler(boardCopy);
-        this.state = new GameState(boardCopy, boardHandler);
+        this.state = new GameState(boardCopy);
         this.boardHeuristic = new GameBoardHeuristic(boardCopy, state, this, opponent);
     }
 

@@ -2,7 +2,6 @@ package src.ConnectFour.UI;
 
 import src.ConnectFour.BusinessLogic.Board;
 import src.ConnectFour.BusinessLogic.State;
-import src.ConnectFour.BusinessLogic.TurnHandler;
 
 public class ConsoleOutputHandler implements OutputHandler {
     private final Board board;

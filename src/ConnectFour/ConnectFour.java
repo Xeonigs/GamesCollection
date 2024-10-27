@@ -13,7 +13,7 @@ public class ConnectFour {
 
         Board board = new Board(new Player[COLUMN][ROW], new int[COLUMN]);
         BoardHandler boardHandler = new GameBoardHandler(board);
-        State state = new GameState(board, boardHandler);
+        State state = new GameState(board);
 
         //Player player1 = new HumanPlayer('X', inputHandler, boardHandler);
         Player player2 = new HumanPlayer('O', inputHandler, boardHandler);
@@ -23,7 +23,7 @@ public class ConnectFour {
         player2.setOpponent(player1);
         TurnHandler turnHandler = new GameTurnHandler(player1, player2);
 
-        OutputHandler outputHandler = new ConsoleOutputHandler(board, state, userInterface, turnHandler);
+        OutputHandler outputHandler = new ConsoleOutputHandler(board, state, userInterface);
 
         Loop gameLoop = new GameLoop(state, turnHandler, boardHandler, outputHandler);
         gameLoop.startLoop();
