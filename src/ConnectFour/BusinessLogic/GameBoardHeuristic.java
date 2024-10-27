@@ -37,8 +37,8 @@ public class GameBoardHeuristic implements BoardHeuristic {
 
         Predicate<Player> ownPlayerDemanded = player::equals;
         Predicate<Player> otherPlayerDemanded = opponent::equals;
-        final var valueOwnPlayer = getEvaluationForDemandedPlayer(ownPlayerDemanded);
-        final var valueOtherPlayer = getEvaluationForDemandedPlayer(otherPlayerDemanded);
+        final var valueOwnPlayer = getEvaluationForDemandedPlayer(ownPlayerDemanded, otherPlayerDemanded);
+        final var valueOtherPlayer = getEvaluationForDemandedPlayer(otherPlayerDemanded, ownPlayerDemanded);
 
         if (valueOwnPlayer == 0 || valueOtherPlayer == 0) {
             return 0.5f;
@@ -78,16 +78,16 @@ public class GameBoardHeuristic implements BoardHeuristic {
         }
     }
 
-    private int getEvaluationForDemandedPlayer(Predicate<Player> isPlayerDemanded) {
+    private int getEvaluationForDemandedPlayer(Predicate<Player> isPlayerDemanded, Predicate<Player> isPlayerNotDemanded) {
         int playerValue = 0;
-        playerValue += getValueForDirection(1, 0, isPlayerDemanded);
-        playerValue += getValueForDirection(0, 1, isPlayerDemanded);
-        playerValue += getValueForDirection(1, 1, isPlayerDemanded);
-        playerValue += getValueForDirection(1, -1, isPlayerDemanded);
+        playerValue += getValueForDirection(1, 0, isPlayerDemanded, isPlayerNotDemanded);
+        playerValue += getValueForDirection(0, 1, isPlayerDemanded, isPlayerNotDemanded);
+        playerValue += getValueForDirection(1, 1, isPlayerDemanded, isPlayerNotDemanded);
+        playerValue += getValueForDirection(1, -1, isPlayerDemanded, isPlayerNotDemanded);
         return playerValue;
     }
 
-    private int getValueForDirection(int colDirection, int rowDirection, Predicate<Player> isPlayerDemanded) {
+    private int getValueForDirection(int colDirection, int rowDirection, Predicate<Player> isPlayerDemanded, Predicate<Player> isPlayerNotDemanded) {
         int playerValue = 0;
         final var fromCol = ConnectFour.WINNING_LENGTH * max(0, -colDirection);
         final var fromRow = ConnectFour.WINNING_LENGTH * max(0, -rowDirection);
@@ -95,11 +95,16 @@ public class GameBoardHeuristic implements BoardHeuristic {
         final var toRow = ConnectFour.ROW - ConnectFour.WINNING_LENGTH * max(0, rowDirection);
         for (int col = fromCol; col < toCol; col++) {
             for (int row = fromRow; row < toRow; row++) {
-                final var playerNullDemanded = isPlayerOnPositionNullOrDemanded(col, row, isPlayerDemanded);
-                if (playerNullDemanded) {
-                    var countOwnPlayer = 0;
-                    for (int i = 0; i < ConnectFour.WINNING_LENGTH; i++) {
-                        if (isPlayerOnPositionDemanded(col + i * colDirection, row + i * rowDirection, isPlayerDemanded)) {
+                if (isPlayerOnPositionDemanded(col, row, isPlayerNotDemanded)) {
+                    var countOwnPlayer = 1;
+                    for (int i = 1; i < ConnectFour.WINNING_LENGTH; i++) {
+                        final var iCol = col + i * colDirection;
+                        final var iRow = row + i * rowDirection;
+                        if (isPlayerOnPositionNotDemanded(iCol, iRow, isPlayerNotDemanded)) {
+                            countOwnPlayer = 0;
+                            break;
+                        }
+                        if (isPlayerOnPositionDemanded(iCol, iRow, isPlayerDemanded)) {
                             countOwnPlayer++;
                         }
                     }
@@ -116,15 +121,10 @@ public class GameBoardHeuristic implements BoardHeuristic {
         return isPlayerDemanded.test(playerOnBoard);
     }
 
-    private boolean isPlayerOnBoardNull(int col, int row) {
+    private boolean isPlayerOnPositionNotDemanded(int col, int row, Predicate<Player> isPlayerNotDemanded) {
         final var board = this.board.value();
-        return board[col][row] == null;
-    }
-
-    private boolean isPlayerOnPositionNullOrDemanded(int col, int row, Predicate<Player> isPlayerDemanded) {
-        final var isPlayerOnBoardNull = isPlayerOnBoardNull(col, row);
-        final var isPlayerOnPositionDemanded = isPlayerOnPositionDemanded(col, row, isPlayerDemanded);
-        return isPlayerOnBoardNull || isPlayerOnPositionDemanded;
+        final var playerOnBoard = board[col][row];
+        return isPlayerNotDemanded.test(playerOnBoard);
     }
 
     private int valuationCalculation(int x) {
