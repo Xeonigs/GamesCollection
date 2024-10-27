@@ -110,6 +110,9 @@ class MiniMaxPlayerVersionsTest {
         8 depth, 100 rounds: 91ms
         8 depth, 100 rounds: 87ms
 
+        after improving the quality of the evaluation function:
+        8 depth, 100 rounds: 154ms
+
         unplugged: 8 depth, 100 rounds: 121ms
          */
     }
