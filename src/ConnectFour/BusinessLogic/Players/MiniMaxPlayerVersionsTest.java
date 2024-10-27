@@ -114,13 +114,15 @@ class MiniMaxPlayerVersionsTest {
 
     @org.junit.jupiter.api.Test
     void benchMarkTestV9() {
-        final var depth = 8;
-        final var testRounds = 1000;
+        final var depth = 10;
+        final var testRounds = 5;
         Player testPlayer = new MiniMaxPlayerV9('X', board, depth);
         testMiniMaxPlayer(testPlayer, testRounds);
         /*
         8 depth, 100 rounds: 23ms
         8 depth, 1000 rounds: 22ms
+
+        10 depth, 5 rounds: 423ms
          */
     }
 
