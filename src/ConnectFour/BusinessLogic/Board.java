@@ -2,6 +2,8 @@ package src.ConnectFour.BusinessLogic;
 
 import src.ConnectFour.BusinessLogic.Players.Player;
 
+import java.util.Arrays;
+
 public record Board(Player[][] value, int[] heights) implements Cloneable {
     public Board {
         if (value.length != heights.length) {
@@ -32,7 +34,23 @@ public record Board(Player[][] value, int[] heights) implements Cloneable {
     }
 
     @Override
+    public int hashCode() {
+        return value.hashCode();
+        //return Arrays.deepHashCode(value);
+    }
+
+    @Override
     public Board clone() {
         return new Board(value.clone(), heights.clone());
+    }
+
+    public Board mirroredClone() {
+        Player[][] mirroredValue = new Player[value.length][value[0].length];
+        for (int column = 0; column < value.length; column++) {
+            for (int row = 0; row < value[0].length; row++) {
+                mirroredValue[column][row] = value[value.length - 1 - column][row];
+            }
+        }
+        return new Board(mirroredValue, heights.clone());
     }
 }

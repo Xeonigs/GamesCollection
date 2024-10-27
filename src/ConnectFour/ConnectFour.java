@@ -18,7 +18,7 @@ public class ConnectFour {
 
         Player player1 = new HumanPlayer('X', inputHandler, boardHandler);
         //Player player2 = new MiniMaxPlayerV3('X', board, 7);
-        Player player2 = new MiniMaxPlayerV3('O', board, 7);
+        Player player2 = new MiniMaxPlayerV9('O', board, 10);
         //Player player2 = new ComputerPlayer('O', board, 7);
         player1.setOpponent(player2);
         player2.setOpponent(player1);
