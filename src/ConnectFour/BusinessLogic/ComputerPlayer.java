@@ -3,9 +3,9 @@ package src.ConnectFour.BusinessLogic;
 import src.ConnectFour.ConnectFour;
 
 public class ComputerPlayer implements Player {
-    private char symbol;
-    private int depth;
-    private Board board;
+    private final char symbol;
+    private final int depth;
+    private final Board board;
     private Board boardCopy;
     private double[/*depth*/][/*column*/] evaluationTable;
     private BoardHandler boardHandler;
@@ -48,7 +48,8 @@ public class ComputerPlayer implements Player {
         this.boardHeuristic = null;
     }
 
-    private int minimax(Board board, int depth) {
+    private int minimax(Board board) {
+        int depth = 0;
         for (int i = 0; i < evaluationTable[depth].length; i++) {
             if (boardHandler.isMoveValid(i)) {
                 boardHandler.makeMove(this, i);

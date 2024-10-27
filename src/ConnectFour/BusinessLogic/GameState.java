@@ -4,19 +4,14 @@ import src.ConnectFour.ConnectFour;
 
 public class GameState implements State {
     private final Board board;
-    private final BoardHandler boardHandler;
 
-    public GameState(Board board, BoardHandler boardHandler) {
+    public GameState(Board board) {
         this.board = board;
-        this.boardHandler = boardHandler;
     }
 
     @Override
     public boolean isRunning() {
-        if (getWinner() == null && !isFull()) {
-            return true;
-        }
-        return false;
+        return getWinner() == null && !isFull();
     }
 
     @Override

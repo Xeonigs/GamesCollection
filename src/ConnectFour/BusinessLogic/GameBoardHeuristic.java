@@ -7,10 +7,10 @@ import java.util.function.Predicate;
 import static java.lang.Math.*;
 
 public class GameBoardHeuristic implements BoardHeuristic {
-    private Board board;
-    private State state;
-    private Player player;
-    private Player opponent;
+    private final Board board;
+    private final State state;
+    private final Player player;
+    private final Player opponent;
     private int callCounter = 0;
 
     public GameBoardHeuristic(Board board, State state, Player player, Player opponent) {

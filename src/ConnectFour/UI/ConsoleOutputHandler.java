@@ -8,13 +8,11 @@ public class ConsoleOutputHandler implements OutputHandler {
     private final Board board;
     private final State state;
     private final UserInterface userInterface;
-    private final TurnHandler turnHandler;
 
-    public ConsoleOutputHandler(final Board board, final State state, final UserInterface userInterface, TurnHandler turnHandler) {
+    public ConsoleOutputHandler(final Board board, final State state, final UserInterface userInterface) {
         this.board = board;
         this.state = state;
         this.userInterface = userInterface;
-        this.turnHandler = turnHandler;
     }
 
     @Override

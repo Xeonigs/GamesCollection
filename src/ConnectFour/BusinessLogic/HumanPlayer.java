@@ -22,7 +22,7 @@ public class HumanPlayer implements Player {
         if (opponent == null) {
             throw new IllegalStateException("Opponent must be set before calling getMove()");
         }
-        Optional<Integer> move = Optional.empty();
+        Optional<Integer> move;
         do {
              move = inputHandler.getMove(this);
         } while(move.isEmpty() ||

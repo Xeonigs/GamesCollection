@@ -1,6 +1,5 @@
 package src.ConnectFour.BusinessLogic;
 
-import static java.lang.Math.asin;
 import static java.lang.Math.pow;
 import static org.junit.jupiter.api.Assertions.*;
 

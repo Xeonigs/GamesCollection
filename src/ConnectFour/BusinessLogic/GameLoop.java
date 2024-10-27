@@ -1,13 +1,12 @@
 package src.ConnectFour.BusinessLogic;
 
-import src.ConnectFour.UI.InputHandler;
 import src.ConnectFour.UI.OutputHandler;
 
 public class GameLoop implements Loop {
-    private State state;
-    private TurnHandler turnHandler;
-    private BoardHandler boardHandler;
-    private OutputHandler outputHandler;
+    private final State state;
+    private final TurnHandler turnHandler;
+    private final BoardHandler boardHandler;
+    private final OutputHandler outputHandler;
 
     public GameLoop(State state, TurnHandler turnHandler, BoardHandler boardHandler, OutputHandler outputHandler) {
         this.state = state;
@@ -25,7 +24,6 @@ public class GameLoop implements Loop {
             boardHandler.makeMove(player, column);
             turnHandler.changePlayer();
         }
-        final var winner = state.getWinner();
         outputHandler.printWinner();
     }
 }

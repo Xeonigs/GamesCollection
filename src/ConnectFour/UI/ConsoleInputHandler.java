@@ -2,7 +2,6 @@ package src.ConnectFour.UI;
 
 import src.ConnectFour.BusinessLogic.Player;
 
-import java.io.IOException;
 import java.util.Optional;
 
 public class ConsoleInputHandler implements InputHandler {
