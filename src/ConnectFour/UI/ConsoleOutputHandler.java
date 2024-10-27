@@ -25,7 +25,7 @@ public class ConsoleOutputHandler implements OutputHandler {
         final var noPlayerSymbol = '_';
 
         for (int row = value[0].length - 1; row >= 0; row--) {
-        for (int col = 0; col < value.length; col++) {
+            for (int col = 0; col < value.length; col++) {
                 final var player = value[col][row];
                 if (player == null) {
                     System.out.print(noPlayerSymbol);
