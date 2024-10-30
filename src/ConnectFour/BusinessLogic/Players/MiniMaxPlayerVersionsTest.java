@@ -1,7 +1,8 @@
-package src.ConnectFour.BusinessLogic.Players;
+package src.Games.ConnectFour.GameLogic.Players;
 
-import src.ConnectFour.BusinessLogic.Board;
-import src.ConnectFour.ConnectFour;
+import src.GameInterfaces.GameLogic.Player;
+import src.Games.ConnectFour.GameLogic.Board;
+import src.Games.ConnectFour.ConnectFour;
 
 class MiniMaxPlayerVersionsTest {
     private Board board = new Board(new Player[ConnectFour.COLUMN][ConnectFour.ROW], new int[ConnectFour.COLUMN]);
