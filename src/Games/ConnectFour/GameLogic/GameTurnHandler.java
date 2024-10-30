@@ -1,9 +1,9 @@
 package src.Games.ConnectFour.GameLogic;
 
-import src.GameInterfaces.GameLogic.TurnHandler;
+import src.GameInterfaces.GameLogic.TurnManager;
 import src.GameInterfaces.GameLogic.Player;
 
-public class GameTurnHandler implements TurnHandler {
+public class GameTurnHandler implements TurnManager {
     private Player player1;
     private Player player2;
     private boolean isPlayer1Turn;

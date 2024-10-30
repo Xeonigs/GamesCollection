@@ -1,6 +1,6 @@
 package src.Games.ConnectFour.GameLogic;
 
-import src.GameInterfaces.GameLogic.BoardHeuristic;
+import src.GameInterfaces.GameLogic.Heuristic;
 import src.GameInterfaces.GameLogic.State;
 import src.GameInterfaces.GameLogic.Player;
 import src.Games.ConnectFour.ConnectFour;
@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 
 import static java.lang.Math.*;
 
-public class GameBoardHeuristic implements BoardHeuristic {
+public class GameBoardHeuristic implements Heuristic {
     private final Board board;
     private final State state;
     private final Player player;
@@ -24,7 +24,7 @@ public class GameBoardHeuristic implements BoardHeuristic {
     }
 
     @Override
-    public float evaluateBoard() {
+    public float evaluate() {
         //callCounter++;
         if (!state.isRunning()) {
             final var winner = state.getWinner();

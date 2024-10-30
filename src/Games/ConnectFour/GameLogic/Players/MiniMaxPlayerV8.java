@@ -1,7 +1,7 @@
 package src.Games.ConnectFour.GameLogic.Players;
 
-import src.GameInterfaces.GameLogic.BoardHandler;
-import src.GameInterfaces.GameLogic.BoardHeuristic;
+import src.GameInterfaces.GameLogic.Board;
+import src.GameInterfaces.GameLogic.Heuristic;
 import src.GameInterfaces.GameLogic.Player;
 import src.GameInterfaces.GameLogic.State;
 import src.Games.ConnectFour.GameLogic.*;
@@ -18,17 +18,17 @@ import java.util.Map;
 public class MiniMaxPlayerV8 implements Player {
     private final char symbol;
     private final int depth;
-    private final Board board;
-    private Board boardCopy;
+    private final src.Games.ConnectFour.GameLogic.Board board;
+    private src.Games.ConnectFour.GameLogic.Board boardCopy;
     private float[/*column*/] evaluation;
     private float[/*depth*/] depthsEvaluation;
-    private BoardHandler boardHandler;
+    private Board boardHandler;
     private State state;
-    private BoardHeuristic boardHeuristic;
+    private Heuristic boardHeuristic;
     private Player opponent;
     private Map<String, Float> rememberedBoards;
 
-    public MiniMaxPlayerV8(char symbol, Board board, int depth) {
+    public MiniMaxPlayerV8(char symbol, src.Games.ConnectFour.GameLogic.Board board, int depth) {
         if (depth < 1) {
             throw new IllegalArgumentException("Depth must be at least 1");
         }
@@ -68,7 +68,7 @@ public class MiniMaxPlayerV8 implements Player {
         this.rememberedBoards = null;
     }
 
-    private int minimax(Board board) {
+    private int minimax(src.Games.ConnectFour.GameLogic.Board board) {
         int depth = 0;
         long startTime = System.nanoTime();
         for (int i = 0; i < evaluation.length; i++) {
@@ -94,9 +94,9 @@ public class MiniMaxPlayerV8 implements Player {
         return indexOfHighestValue;
     }
 
-    private float min(Board board, int depth, float bestValue) {
+    private float min(src.Games.ConnectFour.GameLogic.Board board, int depth, float bestValue) {
         if (depth == this.depth || !state.isRunning()) {
-            return boardHeuristic.evaluateBoard();
+            return boardHeuristic.evaluate();
         }
 
         depthsEvaluation[depth] = 2;
@@ -127,9 +127,9 @@ public class MiniMaxPlayerV8 implements Player {
         return depthsEvaluation[depth];
     }
 
-    private float max(Board board, int depth, float worstValue) {
+    private float max(src.Games.ConnectFour.GameLogic.Board board, int depth, float worstValue) {
         if (depth == this.depth || !state.isRunning()) {
-            return boardHeuristic.evaluateBoard();
+            return boardHeuristic.evaluate();
         }
 
         depthsEvaluation[depth] = -1;

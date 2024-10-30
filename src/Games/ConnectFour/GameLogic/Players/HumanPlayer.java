@@ -1,6 +1,6 @@
 package src.Games.ConnectFour.GameLogic.Players;
 
-import src.GameInterfaces.GameLogic.BoardHandler;
+import src.GameInterfaces.GameLogic.Board;
 import src.GameInterfaces.GameLogic.Player;
 import src.Games.ConnectFour.ConnectFour;
 import src.GameInterfaces.UI.InputHandler;
@@ -10,10 +10,10 @@ import java.util.Optional;
 public class HumanPlayer implements Player {
     private final char symbol;
     private final InputHandler inputHandler;
-    private final BoardHandler boardHandler;
+    private final Board boardHandler;
     private Player opponent;
 
-    public HumanPlayer(char symbol, InputHandler inputHandler, BoardHandler boardHandler) {
+    public HumanPlayer(char symbol, InputHandler inputHandler, Board boardHandler) {
         this.symbol = symbol;
         this.inputHandler = inputHandler;
         this.boardHandler = boardHandler;
