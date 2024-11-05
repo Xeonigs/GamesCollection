@@ -42,16 +42,14 @@ public class GameBoardHeuristic implements Heuristic {
         final var valueOwnPlayer = getEvaluationForDemandedPlayer(ownPlayerDemanded, otherPlayerDemanded);
         final var valueOtherPlayer = getEvaluationForDemandedPlayer(otherPlayerDemanded, ownPlayerDemanded);
 
-        // TODO
-        if (valueOwnPlayer == 0 || valueOtherPlayer == 0) {
-            return 0.5f;
-        }
-
         //System.out.println("Call counter: " + callCounter);
         return calculateValues(valueOwnPlayer, valueOtherPlayer);
     }
 
     private float calculateValues(int valueOwnPlayer, int valueOtherPlayer) {
+        if (valueOwnPlayer == 0 && valueOtherPlayer == 0) {
+            return 0.5f;
+        }
         if (valueOwnPlayer > valueOtherPlayer) {
             // ownPlayer = 8
             // otherPlayer = 1

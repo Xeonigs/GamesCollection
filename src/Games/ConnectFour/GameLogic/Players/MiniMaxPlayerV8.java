@@ -111,6 +111,7 @@ public class MiniMaxPlayerV8 implements Player {
                 } else {
                     value = max(board, depth + 1, depthsEvaluation[depth]);
                     rememberedBoards.put(boardString, value);
+                    // maybe mirror existing string instead of board
                     rememberedBoards.put(board.horizontallyMirroredToString(), value);
                     boardHandler.undoMove();
                 }
