@@ -3,14 +3,14 @@ package src.Games.ConnectFour.UI;
 import src.GameInterfaces.UI.OutputHandler;
 import src.Games.ConnectFour.GameLogic.Board;
 import src.GameInterfaces.GameLogic.State;
-import src.UserInterfaces.UserInterface;
+import src.UserInterfaces.TextUserInterface;
 
 public class ConsoleOutputHandler implements OutputHandler {
     private final Board board;
     private final State state;
-    private final UserInterface userInterface;
+    private final TextUserInterface userInterface;
 
-    public ConsoleOutputHandler(final Board board, final State state, final UserInterface userInterface) {
+    public ConsoleOutputHandler(final Board board, final State state, final TextUserInterface userInterface) {
         this.board = board;
         this.state = state;
         this.userInterface = userInterface;

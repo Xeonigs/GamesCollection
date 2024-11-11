@@ -8,14 +8,14 @@ import src.Games.ConnectFour.GameLogic.*;
 import src.Games.ConnectFour.GameLogic.Players.*;
 import src.Games.ConnectFour.UI.*;
 import src.UserInterfaces.ConsoleUserInterface;
-import src.UserInterfaces.UserInterface;
+import src.UserInterfaces.TextUserInterface;
 
 public class ConnectFour {
     public static final int COLUMN = 7;
     public static final int ROW = 6;
     public static final int WINNING_LENGTH = 4;
     public void start() {
-        UserInterface userInterface = new ConsoleUserInterface();
+        TextUserInterface userInterface = new ConsoleUserInterface();
         InputHandler inputHandler = new ConsoleInputHandler(userInterface);
 
         src.Games.ConnectFour.GameLogic.Board board = new src.Games.ConnectFour.GameLogic.Board(new Player[COLUMN][ROW], new int[COLUMN]);

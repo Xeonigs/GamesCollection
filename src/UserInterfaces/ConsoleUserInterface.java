@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class ConsoleUserInterface implements UserInterface {
+public class ConsoleUserInterface implements TextUserInterface {
     @Override
     public void display(String message) {
         System.out.println(message);

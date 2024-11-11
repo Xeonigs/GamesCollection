@@ -2,14 +2,14 @@ package src.Games.ConnectFour.UI;
 
 import src.GameInterfaces.UI.InputHandler;
 import src.GameInterfaces.GameLogic.Player;
-import src.UserInterfaces.UserInterface;
+import src.UserInterfaces.TextUserInterface;
 
 import java.util.Optional;
 
 public class ConsoleInputHandler implements InputHandler {
-    UserInterface userInterface;
+    TextUserInterface userInterface;
 
-    public ConsoleInputHandler(UserInterface userInterface) {
+    public ConsoleInputHandler(TextUserInterface userInterface) {
         this.userInterface = userInterface;
     }
 
