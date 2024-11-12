@@ -1,4 +1,4 @@
-package src.UserInterfaces;
+package src.UserInterfaces.Console;
 
 import java.io.BufferedReader;
 import java.io.IOException;
