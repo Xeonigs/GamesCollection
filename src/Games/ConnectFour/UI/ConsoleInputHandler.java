@@ -2,7 +2,7 @@ package src.Games.ConnectFour.UI;
 
 import src.GameInterfaces.UI.InputHandler;
 import src.GameInterfaces.GameLogic.Player;
-import src.UserInterfaces.TextUserInterface;
+import src.UserInterfaces.Console.TextUserInterface;
 
 import java.util.Optional;
 

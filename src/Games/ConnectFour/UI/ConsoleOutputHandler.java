@@ -3,7 +3,7 @@ package src.Games.ConnectFour.UI;
 import src.GameInterfaces.UI.OutputHandler;
 import src.Games.ConnectFour.GameLogic.Board;
 import src.GameInterfaces.GameLogic.State;
-import src.UserInterfaces.TextUserInterface;
+import src.UserInterfaces.Console.TextUserInterface;
 
 public class ConsoleOutputHandler implements OutputHandler {
     private final Board board;

@@ -7,13 +7,14 @@ import src.GameInterfaces.UI.OutputHandler;
 import src.Games.ConnectFour.GameLogic.*;
 import src.Games.ConnectFour.GameLogic.Players.*;
 import src.Games.ConnectFour.UI.*;
-import src.UserInterfaces.ConsoleUserInterface;
-import src.UserInterfaces.TextUserInterface;
+import src.UserInterfaces.Console.ConsoleUserInterface;
+import src.UserInterfaces.Console.TextUserInterface;
 
 public class ConnectFour {
     public static final int COLUMN = 7;
     public static final int ROW = 6;
     public static final int WINNING_LENGTH = 4;
+
     public void start() {
         TextUserInterface userInterface = new ConsoleUserInterface();
         InputHandler inputHandler = new ConsoleInputHandler(userInterface);
