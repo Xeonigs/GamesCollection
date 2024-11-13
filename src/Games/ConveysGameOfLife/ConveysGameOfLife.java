@@ -49,6 +49,7 @@ public class ConveysGameOfLife {
 
         while (true) {
             if (gameState.isRunning()) {
+                // in get changes, get last changes and calculate new changes
                 var changes = cellChanges.getChanges();
                 cellState.queueChanges(changes);
                 try {
