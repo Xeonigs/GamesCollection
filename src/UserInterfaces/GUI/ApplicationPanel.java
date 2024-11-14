@@ -7,16 +7,15 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-/// <summary>
-/// This class is the main panel for the application.
-///
-/// </summary>
-public class ApplicationPanel extends JPanel implements Runnable, KeyListener, MouseListener {
+public class ApplicationPanel extends JPanel implements Runnable, KeyListener, MouseListener, GUISwitcher {
     public static final Dimension SCREEN_SIZE = new Dimension(800, 600);
     public static final Color BACKGROUND_COLOR = Color.BLACK;
-    private final GraphicalUserInterface currentUI = new Menu();
 
-    public ApplicationPanel() {
+    private GraphicalUserInterface currentGraphicalUserInterface;
+
+    public ApplicationPanel(GraphicalUserInterface graphicalUserInterface) {
+        this.currentGraphicalUserInterface = graphicalUserInterface;
+
         setPreferredSize(SCREEN_SIZE);
         setBackground(BACKGROUND_COLOR);
         JFrame frame = new JFrame();
@@ -49,54 +48,59 @@ public class ApplicationPanel extends JPanel implements Runnable, KeyListener, M
         var mousePos = getMousePosition();
         var awd = MouseInfo.getPointerInfo();
         getMousePosition();
-        currentUI.render(graphics, mousePos);
+        currentGraphicalUserInterface.render(graphics, mousePos);
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
         var key = e.getKeyChar();
-        currentUI.keyTyped(key);
+        currentGraphicalUserInterface.keyTyped(key);
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         var key = e.getKeyChar();
-        currentUI.keyPressed(key);
+        currentGraphicalUserInterface.keyPressed(key);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         var key = e.getKeyChar();
-        currentUI.keyReleased(key);
+        currentGraphicalUserInterface.keyReleased(key);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         var mousePos = getMousePosition();
-        currentUI.mouseClicked(mousePos);
+        currentGraphicalUserInterface.mouseClicked(mousePos);
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         var mousePos = getMousePosition();
-        currentUI.mousePressed(mousePos);
+        currentGraphicalUserInterface.mousePressed(mousePos);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         var mousePos = getMousePosition();
-        currentUI.mouseReleased(mousePos);
+        currentGraphicalUserInterface.mouseReleased(mousePos);
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
         var mousePos = getMousePosition();
-        currentUI.mouseEntered(mousePos);
+        currentGraphicalUserInterface.mouseEntered(mousePos);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         var mousePos = getMousePosition();
-        currentUI.mouseExited(mousePos);
+        currentGraphicalUserInterface.mouseExited(mousePos);
+    }
+
+    @Override
+    public void switchGUI(GraphicalUserInterface graphicalUserInterface) {
+        this.currentGraphicalUserInterface = graphicalUserInterface;
     }
 }

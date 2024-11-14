@@ -2,8 +2,7 @@ package src.UserInterfaces.GUI;
 
 import java.awt.*;
 
-public interface GraphicalUserInterface {
-    void render(Graphics graphics, Point mousePos);
+public interface GraphicalUserInterface extends Renderable {
     void keyTyped(char key);
     void keyPressed(char key);
     void keyReleased(char key);

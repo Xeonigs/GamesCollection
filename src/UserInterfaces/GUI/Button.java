@@ -7,10 +7,12 @@ import java.util.Objects;
 public class Button implements GUIObject {
     private final RoundRectangle2D roundedRectangle;
     String text;
-    public Button(int x, int y, int width, int height, int round, String text) {
+    Runnable function;
+    public Button(int x, int y, int width, int height, float round, String text, Runnable function) {
         var roundValue = (int) (Math.min(width, height) * round);
         this.roundedRectangle = new RoundRectangle2D.Float(x, y, width, height, roundValue, roundValue);
         this.text = text;
+        this.function = function;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class Button implements GUIObject {
 
     @Override
     public void onClick() {
-        System.out.println(text + " clicked");
+        function.run();
     }
 
     @Override

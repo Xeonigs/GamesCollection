@@ -1,16 +1,13 @@
 package src.UserInterfaces.GUI;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 public class Menu implements GraphicalUserInterface {
-    private List<GUIObject> guiObjects = new ArrayList<>();
+    private Collection<GUIObject> guiObjects;
 
-    public Menu() {
-        guiObjects.add(new Button(300, 100, 200, 50, 1, "Start"));
-        guiObjects.add(new Button(300, 200, 200, 50, 1, "Options"));
-        guiObjects.add(new Button(300, 300, 200, 50, 1, "Exit"));
+    public Menu(Collection<GUIObject> guiObjects) {
+        this.guiObjects = guiObjects;
     }
 
     @Override
