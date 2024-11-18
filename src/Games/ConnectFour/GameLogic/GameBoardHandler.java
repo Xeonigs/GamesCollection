@@ -34,13 +34,4 @@ public class GameBoardHandler implements BoardHandler {
     public boolean isMoveValid(int column) {
         return board.heights()[column] < board.value()[column].length;
     }
-
-    @Override
-    public int movesCount() {
-        int count = 0;
-        for (int height : board.heights()) {
-            count += height;
-        }
-        return count;
-    }
 }
