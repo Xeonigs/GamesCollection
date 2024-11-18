@@ -1,9 +1,11 @@
-package src.UserInterfaces.GUI;
+package src.UserInterfaces.GUI.Menus;
+
+import src.UserInterfaces.GUI.GUIObject;
 
 import java.awt.*;
 import java.util.Collection;
 
-public class Menu implements GraphicalUserInterface {
+public class Menu implements GUIObject {
     private Collection<GUIObject> guiObjects;
 
     public Menu(Collection<GUIObject> guiObjects) {
@@ -35,9 +37,7 @@ public class Menu implements GraphicalUserInterface {
     @Override
     public void mouseClicked(Point mousePos) {
         for (var ob : guiObjects) {
-            if (ob.intersects(mousePos)) {
-                ob.onClick();
-            }
+            ob.mouseClicked(mousePos);
         }
     }
 

@@ -1,13 +1,13 @@
 package src.Games.ConnectFour.GameLogic;
 
-import src.GameInterfaces.GameLogic.Board;
+import src.GameInterfaces.GameLogic.BoardHandler;
 import src.GameInterfaces.GameLogic.Player;
 import src.Games.ConnectFour.ConnectFour;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class GameBoardHandler implements Board {
+public class GameBoardHandler implements BoardHandler {
     private src.Games.ConnectFour.GameLogic.Board board;
     private Deque<Integer> moves;
 

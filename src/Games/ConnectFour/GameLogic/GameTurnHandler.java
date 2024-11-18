@@ -33,6 +33,16 @@ public class GameTurnHandler implements TurnManager {
     }
 
     @Override
+    public boolean isActivePlayer(Player player) {
+        return getActivePlayer().equals(player);
+    }
+
+    @Override
+    public boolean isOpponent(Player player) {
+        return getOpponent().equals(player);
+    }
+
+    @Override
     public void changePlayer() {
         isPlayer1Turn = !isPlayer1Turn;
     }

@@ -3,7 +3,8 @@ package src.Games.ConveysGameOfLife;
 import java.util.*;
 
 public class CellChangesCalculator implements StateChangeCalculator {
-    private Collection<Coordinates> aliveCells;
+    private final Collection<Coordinates> aliveCells;
+    private final Collection<Coordinates> cellsToCheck;
 
     public static final Coordinates UP = new Coordinates(0, 1);
     public static final Coordinates DOWN = new Coordinates(0, -1);
@@ -15,16 +16,16 @@ public class CellChangesCalculator implements StateChangeCalculator {
     public static final Coordinates DOWN_RIGHT = new Coordinates(1, -1);
     public static final Coordinates[] DIRECTIONS = {UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT};
 
-    public CellChangesCalculator(Collection<Coordinates> aliveCells) {
+    public CellChangesCalculator(Collection<Coordinates> aliveCells, Collection<Coordinates> cellsToCheck) {
         this.aliveCells = aliveCells;
+        this.cellsToCheck = cellsToCheck;
     }
 
     @Override
     public Collection<Coordinates> getChanges() {
         Set<Coordinates> changes = new TreeSet<>();
-        Collection<Coordinates> cellsToCheck = getCellsToCheck();
         for (var cell : cellsToCheck) {
-            int neighbours = getNeighbours(cell);
+            int neighbours = getNeighbours(cell, 4);
             if (aliveCells.contains(cell)) {
                 if (neighbours < 2 || neighbours > 3) {
                     changes.add(cell);
@@ -35,23 +36,16 @@ public class CellChangesCalculator implements StateChangeCalculator {
                 }
             }
         }
+        cellsToCheck.clear();
         return changes;
     }
 
-    private Collection<Coordinates> getCellsToCheck() {
-        Set<Coordinates> cellsToCheck = new TreeSet<>();
-        for (var cell : aliveCells) {
-            cellsToCheck.add(cell);
-            for (var direction : DIRECTIONS) {
-                cellsToCheck.add(cell.add(direction));
-            }
-        }
-        return cellsToCheck;
-    }
-
-    private int getNeighbours(Coordinates cell) {
+    private int getNeighbours(Coordinates cell, int maxCount) {
         int neighbours = 0;
         for (var direction : DIRECTIONS) {
+            if (neighbours == maxCount) {
+                return neighbours;
+            }
             if (aliveCells.contains(cell.add(direction))) {
                 neighbours++;
             }
@@ -59,3 +53,5 @@ public class CellChangesCalculator implements StateChangeCalculator {
         return neighbours;
     }
 }
+
+

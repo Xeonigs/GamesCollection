@@ -1,9 +1,13 @@
 package src.Games.ConveysGameOfLife;
 
+import java.util.Collection;
+
 public class CurrentGameState implements GameState {
-    boolean running;
-    int speed;
-    int pixelSize;
+    private boolean running;
+    private int speed;
+    private int pixelSize;
+    private Collection<Coordinates> aliveCells;
+    private Collection<Coordinates> cellsToCheck;
 
     static final int MIN_SPEED = 2;
     static final int MAX_SPEED = 1000;
@@ -11,10 +15,12 @@ public class CurrentGameState implements GameState {
     static final int MIN_PIXEL_SIZE = 1;
     static final int MAX_PIXEL_SIZE = 50;
 
-    public CurrentGameState(boolean running, int speed, int pixelSize) {
+    public CurrentGameState(boolean running, int speed, int pixelSize, Collection<Coordinates> aliveCells, Collection<Coordinates> cellsToCheck) {
         this.running = running;
         this.speed = speed;
         this.pixelSize = pixelSize;
+        this.aliveCells = aliveCells;
+        this.cellsToCheck = cellsToCheck;
     }
 
     @Override
@@ -24,6 +30,18 @@ public class CurrentGameState implements GameState {
 
     @Override
     public void toggleRunning() {
+        if (!running) {
+            for (var cell : aliveCells) {
+                cellsToCheck.add(cell);
+                for (var direction : CellChangesCalculator.DIRECTIONS) {
+                    cellsToCheck.add(cell.add(direction));
+                }
+            }
+        } else {
+            synchronized (cellsToCheck) {
+                cellsToCheck.clear();
+            }
+        }
         running = !running;
     }
 

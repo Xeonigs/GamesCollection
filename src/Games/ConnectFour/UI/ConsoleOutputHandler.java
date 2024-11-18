@@ -5,6 +5,7 @@ import src.Games.ConnectFour.GameLogic.Board;
 import src.GameInterfaces.GameLogic.State;
 import src.UserInterfaces.Console.TextUserInterface;
 
+@Deprecated
 public class ConsoleOutputHandler implements OutputHandler {
     private final Board board;
     private final State state;
@@ -17,7 +18,7 @@ public class ConsoleOutputHandler implements OutputHandler {
     }
 
     @Override
-    public void printBoard() {
+    public void showBoard() {
         clearScreen();
         writeBoard();
     }
@@ -32,7 +33,7 @@ public class ConsoleOutputHandler implements OutputHandler {
                 if (player == null) {
                     System.out.print(noPlayerSymbol);
                 } else {
-                    System.out.print(player.getSymbol());
+                    System.out.print(player.getColor());
                 }
             }
             System.out.println();
@@ -44,14 +45,14 @@ public class ConsoleOutputHandler implements OutputHandler {
     }
 
     @Override
-    public void printWinner() {
+    public void showWinner() {
         clearScreen();
         writeBoard();
         final var winner = state.getWinner();
         if (winner == null) {
             userInterface.display("It's a draw!");
         } else {
-            userInterface.display(winner.getSymbol() + " wins!");
+            userInterface.display(winner.getColor() + " wins!");
         }
     }
 

@@ -1,5 +1,8 @@
 package src.UserInterfaces.GUI;
 
-public interface GUISwitcher {
-    void switchGUI(GraphicalUserInterface graphicalUserInterface);
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+
+public interface GUISwitcher extends Runnable, KeyListener, MouseListener {
+    void switchGUI(GUIObject gui);
 }

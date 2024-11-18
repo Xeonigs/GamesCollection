@@ -6,6 +6,7 @@ import src.UserInterfaces.Console.TextUserInterface;
 
 import java.util.Optional;
 
+@Deprecated
 public class ConsoleInputHandler implements InputHandler {
     TextUserInterface userInterface;
 
@@ -15,7 +16,7 @@ public class ConsoleInputHandler implements InputHandler {
 
     @Override
     public Optional<Integer> getMove(Player player) {
-        final var playerSymbol = player.getSymbol();
+        final var playerSymbol = player.getColor();
         final var message = "Player " + playerSymbol + " enter a column number:";
         try {
             final var input = userInterface.read(message);

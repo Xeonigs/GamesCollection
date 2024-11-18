@@ -2,7 +2,7 @@ package src.UserInterfaces.GUI;
 
 import java.awt.*;
 
-public interface GraphicalUserInterface extends Renderable {
+public interface InputListener {
     void keyTyped(char key);
     void keyPressed(char key);
     void keyReleased(char key);

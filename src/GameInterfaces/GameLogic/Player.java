@@ -1,7 +1,8 @@
 package src.GameInterfaces.GameLogic;
 
+import java.awt.*;
+
 public interface Player {
-    int getMove();
-    char getSymbol();
-    void setOpponent(Player opponent);
+    Color getColor();
+    Color getHighlightColor();
 }

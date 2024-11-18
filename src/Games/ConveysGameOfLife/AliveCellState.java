@@ -6,25 +6,32 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class AliveCellState implements StateHandler {
     private Collection<Coordinates> aliveCells;
-    private Queue<Coordinates> queuedChanges = new LinkedBlockingQueue<>() {
-    };
+    private Queue<Coordinates> queuedChanges = new LinkedBlockingQueue<>();
+    private Collection<Coordinates> cellsToCheck;
 
-    public AliveCellState(Collection<Coordinates> aliveCells) {
+    public AliveCellState(Collection<Coordinates> aliveCells, Collection<Coordinates> cellsToCheck) {
         this.aliveCells = aliveCells;
+        this.cellsToCheck = cellsToCheck;
     }
 
     @Override
     public synchronized void changeQueuedChanges() {
         while (!queuedChanges.isEmpty()) {
-            changeCell(queuedChanges.poll());
+            var cell = queuedChanges.poll();
+            if (changeCell(cell)) {
+                cellsToCheck.add(cell);
+                for (var direction : CellChangesCalculator.DIRECTIONS) {
+                    cellsToCheck.add(cell.add(direction));
+                }
+            }
         }
     }
 
-    private void changeCell(Coordinates cell) {
+    private boolean changeCell(Coordinates cell) {
         if (aliveCells.contains(cell)) {
-            aliveCells.remove(cell);
+            return aliveCells.remove(cell);
         } else {
-            aliveCells.add(cell);
+            return aliveCells.add(cell);
         }
     }
 

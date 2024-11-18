@@ -1,7 +1,7 @@
 package src.GameInterfaces.UI;
 
 public interface OutputHandler {
-    void printBoard();
-    void printWinner();
+    void showBoard();
+    void showWinner();
     void clearScreen();
 }

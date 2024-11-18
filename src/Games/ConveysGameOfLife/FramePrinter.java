@@ -2,9 +2,7 @@ package src.Games.ConveysGameOfLife;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.util.Collection;
 

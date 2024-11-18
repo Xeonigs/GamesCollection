@@ -8,9 +8,9 @@ public class Button implements GUIObject {
     private final RoundRectangle2D roundedRectangle;
     String text;
     Runnable function;
-    public Button(int x, int y, int width, int height, float round, String text, Runnable function) {
-        var roundValue = (int) (Math.min(width, height) * round);
-        this.roundedRectangle = new RoundRectangle2D.Float(x, y, width, height, roundValue, roundValue);
+    public Button(Point position, Dimension size, float round, String text, Runnable function) {
+        var roundValue = (int) (Math.min(size.width, size.height) * round);
+        this.roundedRectangle = new RoundRectangle2D.Float(position.x, position.y, size.width, size.height, roundValue, roundValue);
         this.text = text;
         this.function = function;
     }
@@ -25,12 +25,48 @@ public class Button implements GUIObject {
     }
 
     @Override
-    public void onClick() {
-        function.run();
+    public void keyTyped(char key) {
+
     }
 
     @Override
-    public boolean intersects(Point point) {
+    public void keyPressed(char key) {
+
+    }
+
+    @Override
+    public void keyReleased(char key) {
+
+    }
+
+    @Override
+    public void mouseClicked(Point mousePos) {
+        if (intersects(mousePos)) {
+            function.run();
+        }
+    }
+
+    @Override
+    public void mousePressed(Point mousePos) {
+
+    }
+
+    @Override
+    public void mouseReleased(Point mousePos) {
+
+    }
+
+    @Override
+    public void mouseEntered(Point mousePos) {
+
+    }
+
+    @Override
+    public void mouseExited(Point mousePos) {
+
+    }
+    
+    private boolean intersects(Point point) {
         return roundedRectangle.intersects(point.x, point.y, 1, 1);
     }
 

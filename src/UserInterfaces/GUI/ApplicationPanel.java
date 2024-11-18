@@ -3,26 +3,22 @@ package src.UserInterfaces.GUI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
-public class ApplicationPanel extends JPanel implements Runnable, KeyListener, MouseListener, GUISwitcher {
+public class ApplicationPanel extends JPanel implements GUISwitcher {
     public static final Dimension SCREEN_SIZE = new Dimension(800, 600);
     public static final Color BACKGROUND_COLOR = Color.BLACK;
 
-    private GraphicalUserInterface currentGraphicalUserInterface;
+    private GUIObject currentGUI;
 
-    public ApplicationPanel(GraphicalUserInterface graphicalUserInterface) {
-        this.currentGraphicalUserInterface = graphicalUserInterface;
-
+    public ApplicationPanel() {
         setPreferredSize(SCREEN_SIZE);
         setBackground(BACKGROUND_COLOR);
         JFrame frame = new JFrame();
         frame.add(this);
         frame.pack();
         frame.setTitle("Games Collection");
-        frame.setResizable(true);
+        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -45,62 +41,62 @@ public class ApplicationPanel extends JPanel implements Runnable, KeyListener, M
     @Override
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        var mousePos = getMousePosition();
-        var awd = MouseInfo.getPointerInfo();
-        getMousePosition();
-        currentGraphicalUserInterface.render(graphics, mousePos);
+        if (currentGUI == null) {
+            return;
+        }
+        currentGUI.render(graphics, getMousePosition());
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
         var key = e.getKeyChar();
-        currentGraphicalUserInterface.keyTyped(key);
+        currentGUI.keyTyped(key);
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         var key = e.getKeyChar();
-        currentGraphicalUserInterface.keyPressed(key);
+        currentGUI.keyPressed(key);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         var key = e.getKeyChar();
-        currentGraphicalUserInterface.keyReleased(key);
+        currentGUI.keyReleased(key);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         var mousePos = getMousePosition();
-        currentGraphicalUserInterface.mouseClicked(mousePos);
+        currentGUI.mouseClicked(mousePos);
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         var mousePos = getMousePosition();
-        currentGraphicalUserInterface.mousePressed(mousePos);
+        currentGUI.mousePressed(mousePos);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         var mousePos = getMousePosition();
-        currentGraphicalUserInterface.mouseReleased(mousePos);
+        currentGUI.mouseReleased(mousePos);
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
         var mousePos = getMousePosition();
-        currentGraphicalUserInterface.mouseEntered(mousePos);
+        currentGUI.mouseEntered(mousePos);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         var mousePos = getMousePosition();
-        currentGraphicalUserInterface.mouseExited(mousePos);
+        currentGUI.mouseExited(mousePos);
     }
 
     @Override
-    public void switchGUI(GraphicalUserInterface graphicalUserInterface) {
-        this.currentGraphicalUserInterface = graphicalUserInterface;
+    public void switchGUI(GUIObject gui) {
+        this.currentGUI = gui;
     }
 }
