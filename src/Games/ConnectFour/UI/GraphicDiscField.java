@@ -1,32 +1,37 @@
 package src.Games.ConnectFour.UI;
 
 import src.GameInterfaces.GameLogic.BoardHandler;
+import src.GameInterfaces.GameLogic.State;
 import src.GameInterfaces.GameLogic.TurnManager;
 import src.Games.ConnectFour.GameLogic.Board;
 import src.Games.ConnectFour.GameLogic.Players.ComputerPlayer;
-import src.Games.ConnectFour.GameLogic.Players.HumanPlayer;
-import src.UserInterfaces.GUI.ApplicationPanel;
 import src.UserInterfaces.GUI.GUIObject;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
-public class BoardColumn implements GUIObject {
+public class GraphicDiscField implements GUIObject {
     private final int column;
+    private final int row;
     private final BoardHandler boardHandler;
     private final Board board;
     private final TurnManager turnManager;
-    private final Rectangle2D rectangle;
+    private final State state;
+    private final Rectangle2D fieldRec;
+    private final Rectangle2D columnRec;
     private final int width;
 
-    BoardColumn(int column, BoardHandler boardHandler, Board board, TurnManager turnManager, Point position, Dimension size) {
+    GraphicDiscField(int column, int row, BoardHandler boardHandler, Board board, TurnManager turnManager, State state, Point position, Dimension size, Point colPosition, Dimension colSize) {
         this.column = column;
+        this.row = row;
         this.boardHandler = boardHandler;
         this.board = board;
         this.turnManager = turnManager;
-        this.rectangle = new Rectangle2D.Float(position.x, position.y, size.width, size.height);
-        this.width = Math.min(size.width, size.height / board.value()[column].length);
+        this.state = state;
+        this.fieldRec = new Rectangle2D.Float(position.x, position.y, size.width, size.height);
+        this.columnRec = new Rectangle2D.Float(colPosition.x, colPosition.y, colSize.width, colSize.height);
+        this.width = Math.min(size.width, size.height);
     }
 
     @Override
@@ -46,7 +51,7 @@ public class BoardColumn implements GUIObject {
 
     @Override
     public void mouseClicked(Point mousePos) {
-        var isMouseInRectangle = Objects.nonNull(mousePos) && rectangle.contains(mousePos);
+        var isMouseInRectangle = Objects.nonNull(mousePos) && fieldRec.contains(mousePos);
         var isMoveValid = boardHandler.isMoveValid(column);
 
         if (isMouseInRectangle && isMoveValid) {
@@ -84,19 +89,16 @@ public class BoardColumn implements GUIObject {
 
     @Override
     public void render(Graphics graphics, Point mousePos) {
-        var colToRender = board.value()[column];
-        for (int i = 0; i < colToRender.length; i++) {
-            var player = colToRender[i];
-            var color = player == null ? Color.GRAY : player.getColor();
-            if (Objects.nonNull(mousePos) && rectangle.contains(mousePos) && board.heights()[column] == i) {
-                color = turnManager.getActivePlayer().getHighlightColor();
-            }
-            graphics.setColor(color);
-
-            var x = (int) rectangle.getX();
-            var y = (int) rectangle.getMaxY() - (i * width + width);
-            var size = (int) (width * 0.9);
-            graphics.fillOval(x, y, size, size);
+        var player = board.value()[column][row];
+        var color = player == null ? Color.GRAY : player.getColor();
+        if (Objects.nonNull(mousePos) && columnRec.contains(mousePos) && board.heights()[column] == row && state.isRunning()) {
+            color = turnManager.getActivePlayer().getHighlightColor();
         }
+        graphics.setColor(color);
+
+        var x = (int) fieldRec.getX();
+        var y = (int) fieldRec.getY();
+        var size = (int) (width * 0.9);
+        graphics.fillOval(x, y, size, size);
     }
 }

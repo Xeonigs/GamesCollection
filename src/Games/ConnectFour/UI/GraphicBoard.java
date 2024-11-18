@@ -1,6 +1,7 @@
 package src.Games.ConnectFour.UI;
 
 import src.GameInterfaces.GameLogic.BoardHandler;
+import src.GameInterfaces.GameLogic.State;
 import src.GameInterfaces.GameLogic.TurnManager;
 import src.Games.ConnectFour.GameLogic.Board;
 import src.UserInterfaces.GUI.GUIObject;
@@ -14,19 +15,31 @@ public class GraphicBoard implements GUIObject {
     private final Board board;
     private final BoardHandler boardHandler;
     private final TurnManager turnManager;
-    private final List<GUIObject> columns = new ArrayList<>();
+    private final State state;
+    private final List<GUIObject> discFields = new ArrayList<>();
     private final Rectangle2D rectangle;
 
-    public GraphicBoard(Board board, BoardHandler boardHandler, TurnManager turnManager, Point position, Dimension size) {
+    public GraphicBoard(Board board, BoardHandler boardHandler, TurnManager turnManager, State state, Point position, Dimension size) {
         this.board = board;
         this.boardHandler = boardHandler;
         this.turnManager = turnManager;
+        this.state = state;
         this.rectangle = new Rectangle2D.Float(position.x, position.y, size.width, size.height);
-        var sizeOfSingleSquare = Math.min(size.width / board.value().length, size.height / board.value()[0].length);
-        int xOffset = ((int)rectangle.getWidth() - board.value().length * sizeOfSingleSquare) / 2;
-        int yOffset = ((int)rectangle.getHeight() - board.value()[0].length * sizeOfSingleSquare) / 2;
-        for (int i = 0; i < board.value().length; i++) {
-            columns.add(new BoardColumn(i, this.boardHandler, this.board, this.turnManager, new Point((int) rectangle.getX() + i * sizeOfSingleSquare + xOffset, (int) rectangle.getY() + yOffset), new Dimension(sizeOfSingleSquare, sizeOfSingleSquare * board.value()[0].length)));
+        setDiscFields();
+    }
+
+    private void setDiscFields() {
+        var sizeOfSingleSquare = Math.min(rectangle.getWidth() / board.value().length, rectangle.getHeight() / board.value()[0].length);
+        int xOffset = (int) (rectangle.getWidth() - board.value().length * sizeOfSingleSquare) / 2;
+        int yOffset = (int) (rectangle.getHeight() - board.value()[0].length * sizeOfSingleSquare) / 2;
+        for (int column = 0; column < board.value().length; column++) {
+            var positionOfSingleColumn = new Point((int) (rectangle.getX() + xOffset + column * sizeOfSingleSquare), (int) rectangle.getY());
+            var sizeOfSingleColumnDimension = new Dimension((int) sizeOfSingleSquare, (int) rectangle.getHeight());
+            for (int row = board.value()[0].length - 1; row >= 0; row--) {
+                var positionOfSingleSquare = new Point((int) (rectangle.getX() + xOffset + column * sizeOfSingleSquare), (int) (rectangle.getMaxY() + yOffset - (row * sizeOfSingleSquare + sizeOfSingleSquare)));
+                var sizeOfSingleSquareDimension = new Dimension((int) sizeOfSingleSquare, (int) sizeOfSingleSquare);
+                discFields.add(new GraphicDiscField(column, row, boardHandler, board, turnManager, state, positionOfSingleSquare, sizeOfSingleSquareDimension, positionOfSingleColumn, sizeOfSingleColumnDimension));
+            }
         }
     }
 
@@ -47,8 +60,8 @@ public class GraphicBoard implements GUIObject {
 
     @Override
     public void mouseClicked(Point mousePos) {
-        for (var column : columns) {
-            column.mouseClicked(mousePos);
+        for (var discField : discFields) {
+            discField.mouseClicked(mousePos);
         }
     }
 
@@ -76,8 +89,6 @@ public class GraphicBoard implements GUIObject {
     public void render(Graphics graphics, Point mousePos) {
         graphics.setColor(Color.DARK_GRAY);
         graphics.fillRect((int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(), (int) rectangle.getHeight());
-        for (var column : columns) {
-            column.render(graphics, mousePos);
-        }
+        discFields.forEach(discField -> discField.render(graphics, mousePos));
     }
 }

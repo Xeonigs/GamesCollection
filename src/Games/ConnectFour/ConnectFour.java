@@ -23,7 +23,7 @@ public class ConnectFour {
         Objects.requireNonNull(player1Type);
         Objects.requireNonNull(player2Type);
 
-        var board = new src.Games.ConnectFour.GameLogic.Board(new Player[COLUMN][ROW], new int[COLUMN]);
+        var board = new Board(new Player[COLUMN][ROW], new int[COLUMN]);
         var boardHandler = new GameBoardHandler(board);
         var state = new GameState(board);
 
@@ -37,8 +37,7 @@ public class ConnectFour {
         }
         var turnHandler = new GameTurnHandler(player1, player2);
 
-        var gui = new ConnectFourUserInterface(state, turnHandler, boardHandler, board);
-        return gui;
+        return new ConnectFourUserInterface(state, turnHandler, boardHandler, board);
     }
 
     private Player createPlayer(Class<? extends Player> playerClass, Color color, Color highlightColor, Board board) {

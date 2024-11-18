@@ -9,6 +9,7 @@ import src.Games.ConnectFour.GameLogic.Players.HumanPlayer;
 import src.UserInterfaces.GUI.GUIObject;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class ConnectFourUserInterface implements GUIObject {
     private final State state;
@@ -23,7 +24,7 @@ public class ConnectFourUserInterface implements GUIObject {
         this.turnManager = turnManager;
         this.boardHandler = boardHandler;
         this.board = board;
-        this.graphicBoard = new GraphicBoard(board, boardHandler, turnManager, new Point(0, 100), new Dimension(800, 400));
+        this.graphicBoard = new GraphicBoard(board, boardHandler, turnManager, state, new Point(0, 100), new Dimension(800, 400));
     }
 
     @Override
@@ -71,5 +72,8 @@ public class ConnectFourUserInterface implements GUIObject {
     @Override
     public void render(Graphics graphics, Point mousePos) {
         graphicBoard.render(graphics, mousePos);
+        if (Objects.nonNull(state.getWinner())) {
+
+        }
     }
 }

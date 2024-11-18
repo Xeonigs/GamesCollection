@@ -7,11 +7,11 @@ import java.awt.event.MouseListener;
 import java.util.Collection;
 
 public class FramePrinter extends JPanel {
-    private Collection<Coordinates> aliveCells;
-    private GameState gameState;
-    private Coordinates maxCoordinates;
-    private MouseListener mouseAdapter;
-    private KeyListener keyAdapter;
+    private final Collection<Coordinates> aliveCells;
+    private final GameState gameState;
+    private final Coordinates maxCoordinates;
+    private final MouseListener mouseAdapter;
+    private final KeyListener keyAdapter;
 
     FramePrinter(Collection<Coordinates> aliveCells, Coordinates maxCoordinates, GameState gameState, MouseListener mouseAdapter, KeyListener keyAdapter) {
         this.aliveCells = aliveCells;

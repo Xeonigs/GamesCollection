@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 public class ConveysGameOfLife {
     public void start() {
-        Set<Coordinates> aliveCells = Collections.synchronizedSortedSet(new TreeSet<>());
+        Set<Coordinates> aliveCells = Collections.synchronizedSet(new TreeSet<>());
         //Set<Coordinates> cellsToCheck = Collections.synchronizedSortedSet(new TreeSet<>());
         Set<Coordinates> cellsToCheck = new ConcurrentSkipListSet<>();
 
