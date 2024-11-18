@@ -13,7 +13,7 @@ public record Board(Player[][] value, int[] heights) implements Cloneable {
          StringBuilder sb = new StringBuilder();
          for (int row = 0; row < value[0].length; row++) {
              for (int column = 0; column < value.length; column++) {
-                 sb.append(value[column][row] == null ? '.' : value[column][row].getSymbol());
+                 sb.append(value[column][row] == null ? '.' : value[column][row].getColor());
              }
              sb.append('\n');
          }
@@ -34,16 +34,6 @@ public record Board(Player[][] value, int[] heights) implements Cloneable {
 
     @Override
     public Board clone() {
-        Player[][] newValue = new Player[value.length][value[0].length];
-        for (int i = 0; i < value.length; i++) {
-            for (int j = 0; j < value[0].length; j++) {
-                newValue[i][j] = value[i][j];
-            }
-        }
-        int[] newHeights = new int[heights.length];
-        for (int i = 0; i < heights.length; i++) {
-            newHeights[i] = heights[i];
-        }
-        return new Board(newValue, newHeights);
+        return new Board(value.clone(), heights.clone());
     }
 }
