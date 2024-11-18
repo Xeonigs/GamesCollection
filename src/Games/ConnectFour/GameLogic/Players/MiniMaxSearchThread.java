@@ -12,6 +12,7 @@ import src.Games.ConnectFour.GameLogic.GameState;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+// has return value
 public class MiniMaxSearchThread implements Callable<MiniMaxResult> {
     private final int depth;
     private final int startColumn;
@@ -23,7 +24,6 @@ public class MiniMaxSearchThread implements Callable<MiniMaxResult> {
     private final Player opponent;
     private final Map<String, Float> rememberedBoards;
     private final float[/*depth*/] depthsEvaluation;
-    private final int[] moves;
 
     public MiniMaxSearchThread(int depth, int startColumn, Board board, Map<String, Float> rememberedBoards, Player activePlayer, Player opponent) {
         this.depth = depth;
@@ -37,10 +37,6 @@ public class MiniMaxSearchThread implements Callable<MiniMaxResult> {
         this.state = new GameState(this.board);
         this.boardHeuristic = new GameBoardHeuristic(this.board, this.state, activePlayer, opponent);
         this.depthsEvaluation = new float[depth];
-        this.moves = new int[board.heights().length];
-        for (int i = 0; i < board.heights().length; i++) {
-            moves[i] = (i + startColumn) % board.heights().length;
-        }
     }
 
     @Override
