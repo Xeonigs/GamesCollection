@@ -27,8 +27,8 @@ public class ConnectFour {
         var boardHandler = new GameBoardHandler(board);
         var state = new GameState(board);
 
-        var player1 = createPlayer(player1Type, PLAYER_RED, PLAYER_RED_HIGHLIGHT, board);
-        var player2 = createPlayer(player2Type, PLAYER_BLUE, PLAYER_BLUE_HIGHLGHT, board);
+        var player1 = createPlayer(player1Type, 'X', PLAYER_RED, PLAYER_RED_HIGHLIGHT, board);
+        var player2 = createPlayer(player2Type, 'O', PLAYER_BLUE, PLAYER_BLUE_HIGHLGHT, board);
         if (player1 instanceof MiniMaxPlayer miniMaxPlayer) {
             miniMaxPlayer.setOpponent(player2);
         }
@@ -40,13 +40,13 @@ public class ConnectFour {
         return new ConnectFourUserInterface(state, turnHandler, boardHandler, board);
     }
 
-    private Player createPlayer(Class<? extends Player> playerClass, Color color, Color highlightColor, Board board) {
+    private Player createPlayer(Class<? extends Player> playerClass, char symbol, Color color, Color highlightColor, Board board) {
         if (playerClass == RandomChoosePlayer.class) {
-            return new RandomChoosePlayer(color, highlightColor);
+            return new RandomChoosePlayer(symbol, color, highlightColor);
         } else if (playerClass == MiniMaxPlayer.class) {
-            return new MiniMaxPlayer(color, highlightColor, board, 7);
+            return new MiniMaxPlayer(symbol, color, highlightColor, board, 7);
         } else if (playerClass == HumanPlayer.class) {
-            return new HumanPlayer(color, highlightColor);
+            return new HumanPlayer(symbol, color, highlightColor);
         } else {
             throw new IllegalArgumentException("Unknown player class: " + playerClass);
         }

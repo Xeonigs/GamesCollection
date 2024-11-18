@@ -17,6 +17,7 @@ import java.util.Map;
 // - only win check last placed disc
 // - instead of pointer use the bits of a long as board
 public class MiniMaxPlayer implements ComputerPlayer {
+    private final char symbol;
     private final Color color;
     private final Color highlightColor;
 
@@ -31,10 +32,11 @@ public class MiniMaxPlayer implements ComputerPlayer {
     private Player opponent;
     private Map<String, Float> rememberedBoards;
 
-    public MiniMaxPlayer(Color color, Color highlightColor, Board board, int depth) {
+    public MiniMaxPlayer(char symbol, Color color, Color highlightColor, Board board, int depth) {
         if (depth < 1) {
             throw new IllegalArgumentException("Depth must be at least 1");
         }
+        this.symbol = symbol;
         this.color = color;
         this.highlightColor = highlightColor;
         this.board = board;
@@ -163,6 +165,11 @@ public class MiniMaxPlayer implements ComputerPlayer {
         }
 
         return depthsEvaluation[depth];
+    }
+
+    @Override
+    public Character getSymbol() {
+        return symbol;
     }
 
     @Override
