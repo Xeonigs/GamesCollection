@@ -24,7 +24,7 @@ public record Board(Player[][] value, int[] heights) implements Cloneable {
             StringBuilder sb = new StringBuilder();
             for (int row = 0; row < value[0].length; row++) {
                 for (int column = value.length - 1; column >= 0; column--) {
-                    sb.append(value[column][row] == null ? '.' : value[column][row].getColor());
+                    sb.append(value[column][row] == null ? '.' : value[column][row].getSymbol());
                 }
                 sb.append('\n');
             }
