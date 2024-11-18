@@ -44,7 +44,7 @@ public class ConnectFour {
         if (playerClass == RandomChoosePlayer.class) {
             return new RandomChoosePlayer(symbol, color, highlightColor);
         } else if (playerClass == MiniMaxPlayer.class) {
-            return new MiniMaxPlayer(symbol, color, highlightColor, board, 7);
+            return new MiniMaxPlayer(symbol, color, highlightColor, board, 9);
         } else if (playerClass == HumanPlayer.class) {
             return new HumanPlayer(symbol, color, highlightColor);
         } else {

@@ -8,8 +8,10 @@ import src.Games.ConnectFour.GameLogic.*;
 import src.Games.ConnectFour.ConnectFour;
 
 import java.awt.*;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.*;
 
 // Area of improvement:
 // - choose the shortest path to win
@@ -22,13 +24,11 @@ public class MiniMaxPlayer implements ComputerPlayer {
     private final Color highlightColor;
 
     private final int depth;
-    private final src.Games.ConnectFour.GameLogic.Board board;
-    private src.Games.ConnectFour.GameLogic.Board boardCopy;
+    private final Board board;
+    private Board boardCopy;
     private float[/*column*/] evaluation;
-    private float[/*depth*/] depthsEvaluation;
     private BoardHandler boardHandler;
     private State state;
-    private Heuristic boardHeuristic;
     private Player opponent;
     private Map<String, Float> rememberedBoards;
 
@@ -57,35 +57,41 @@ public class MiniMaxPlayer implements ComputerPlayer {
     private void newSetup() {
         this.boardCopy = board.clone();
         this.evaluation = new float[ConnectFour.COLUMN];
-        this.depthsEvaluation = new float[depth];
         this.boardHandler = new GameBoardHandler(boardCopy);
         this.state = new GameState(boardCopy);
-        this.boardHeuristic = new GameBoardHeuristic(boardCopy, state, this, opponent);
-        //this.rememberedBoards = Map.of();
-        this.rememberedBoards = new HashMap<>();
+        this.rememberedBoards = new ConcurrentHashMap<>();
     }
 
     private void clearSetup() {
         this.boardCopy = null;
         this.evaluation = null;
-        this.depthsEvaluation = null;
         this.boardHandler = null;
-        this.boardHeuristic = null;
         this.rememberedBoards = null;
     }
 
-    private int minimax(src.Games.ConnectFour.GameLogic.Board board) {
-        int depth = 0;
+    private int minimax(Board board) {
         long startTime = System.nanoTime();
+        List<Callable<MiniMaxResult>> tasks = new ArrayList<>();
         for (int i = 0; i < evaluation.length; i++) {
             if (boardHandler.isMoveValid(i)) {
                 boardHandler.makeMove(this, i);
-                evaluation[i] = min(board, depth + 1, -1);
+                tasks.add(new MiniMaxSearchThread(this.depth, i, board, rememberedBoards, this, opponent));
                 boardHandler.undoMove();
             } else {
                 evaluation[i] = -1;
             }
         }
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        try {
+            List<Future<MiniMaxResult>> futures = executor.invokeAll(tasks);
+            for (Future<MiniMaxResult> future : futures) {
+                MiniMaxResult result = future.get();
+                evaluation[result.column()] = result.value();
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
         long endTime = System.nanoTime();
         long duration = endTime - startTime;
         System.out.println("Time: " + duration / 1000000 + "ms");
@@ -98,73 +104,6 @@ public class MiniMaxPlayer implements ComputerPlayer {
         }
         System.out.println("Computer move (" + getColor() + "): " + (indexOfHighestValue + 1) + " (" + evaluation[indexOfHighestValue] + ")");
         return indexOfHighestValue;
-    }
-
-    private float min(src.Games.ConnectFour.GameLogic.Board board, int depth, float bestValue) {
-        if (depth == this.depth || !state.isRunning()) {
-            return boardHeuristic.evaluate();
-        }
-
-        depthsEvaluation[depth] = 2;
-        for (int i = 0; i < evaluation.length; i++) {
-            if (boardHandler.isMoveValid(i)) {
-                boardHandler.makeMove(opponent, i);
-                final var boardString = board.toString();
-                float value;
-                if (rememberedBoards.containsKey(boardString)) {
-                    value = rememberedBoards.get(boardString);
-                    boardHandler.undoMove();
-                } else {
-                    value = max(board, depth + 1, depthsEvaluation[depth]);
-                    rememberedBoards.put(boardString, value);
-                    // maybe mirror existing string instead of board
-                    rememberedBoards.put(board.horizontallyMirroredToString(), value);
-                    boardHandler.undoMove();
-                }
-
-                if (value < bestValue || value == 0) {
-                    return value;
-                }
-                if (value < depthsEvaluation[depth]) {
-                    depthsEvaluation[depth] = value;
-                }
-            }
-        }
-
-        return depthsEvaluation[depth];
-    }
-
-    private float max(src.Games.ConnectFour.GameLogic.Board board, int depth, float worstValue) {
-        if (depth == this.depth || !state.isRunning()) {
-            return boardHeuristic.evaluate();
-        }
-
-        depthsEvaluation[depth] = -1;
-        for (int i = 0; i < evaluation.length; i++) {
-            if (boardHandler.isMoveValid(i)) {
-                boardHandler.makeMove(this, i);
-                final var boardString = board.toString();
-                float value;
-                if (rememberedBoards.containsKey(boardString)) {
-                    value = rememberedBoards.get(boardString);
-                    boardHandler.undoMove();
-                } else {
-                    value = min(board, depth + 1, depthsEvaluation[depth]);
-                    rememberedBoards.put(boardString, value);
-                    rememberedBoards.put(board.horizontallyMirroredToString(), value);
-                    boardHandler.undoMove();
-                }
-
-                if (value > worstValue || value == 1) {
-                    return value;
-                }
-                if (value > depthsEvaluation[depth]) {
-                    depthsEvaluation[depth] = value;
-                }
-            }
-        }
-
-        return depthsEvaluation[depth];
     }
 
     @Override
