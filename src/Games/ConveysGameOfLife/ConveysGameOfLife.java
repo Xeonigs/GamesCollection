@@ -63,20 +63,24 @@ public class ConveysGameOfLife {
 
         while (true) {
             if (gameState.isRunning()) {
-                var timeBefore = System.currentTimeMillis();
                 var changes = cellChanges.getChanges();
                 cellState.queueChanges(changes);
-                var timeElapsed = System.currentTimeMillis() - timeBefore;
-                try {
-                    var sleepTime = Math.max(gameState.getSpeed() - (long)timeElapsed, 0);
-                    Thread.sleep(0);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                //sleep(gameState.getSpeed());
             }
 
             cellState.changeQueuedChanges();
             printer.repaint();
+        }
+    }
+
+    private void sleep(long time) {
+        var timeBefore = System.currentTimeMillis();
+        var timeElapsed = System.currentTimeMillis() - timeBefore;
+        try {
+            var sleepTime = Math.max(time - timeElapsed, 0);
+            Thread.sleep(0);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
