@@ -7,6 +7,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 public class ConveysGameOfLife {
+    long timeBefore = System.currentTimeMillis();
+
     public void start() {
         Set<Coordinates> aliveCells = Collections.synchronizedSet(new TreeSet<>());
         //Set<Coordinates> cellsToCheck = Collections.synchronizedSortedSet(new TreeSet<>());
@@ -74,8 +76,9 @@ public class ConveysGameOfLife {
     }
 
     private void sleep(long time) {
-        var timeBefore = System.currentTimeMillis();
-        var timeElapsed = System.currentTimeMillis() - timeBefore;
+        var timeNow = System.currentTimeMillis();
+        var timeElapsed = timeNow - timeBefore;
+        timeBefore = timeNow;
         try {
             var sleepTime = Math.max(time - timeElapsed, 0);
             Thread.sleep(0);
