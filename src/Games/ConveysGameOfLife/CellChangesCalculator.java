@@ -1,5 +1,6 @@
 package src.Games.ConveysGameOfLife;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -29,41 +30,46 @@ public class CellChangesCalculator implements StateChangeCalculator {
     public Collection<Coordinates> getChanges() throws InterruptedException {
         Set<Coordinates> changes = new ConcurrentSkipListSet<>();
 
-        class Task implements Callable<Void> {
+        class Task implements Callable<Optional<Coordinates>> {
             private final Coordinates cell;
             private final Collection<Coordinates> aliveCells;
-            private final Collection<Coordinates> cellsToCheck;
-            private final Collection<Coordinates> changes;
 
-            public Task(Coordinates cell, Collection<Coordinates> aliveCells, Collection<Coordinates> cellsToCheck, Collection<Coordinates> changes) {
+            public Task(Coordinates cell, Collection<Coordinates> aliveCells) {
                 this.cell = cell;
                 this.aliveCells = aliveCells;
-                this.cellsToCheck = cellsToCheck;
-                this.changes = changes;
             }
 
             @Override
-            public Void call() {
+            public Optional<Coordinates> call() {
                 int neighbours = getNeighbours(cell, aliveCells, 4);
                 if (aliveCells.contains(cell)) {
                     if (neighbours < 2 || neighbours > 3) {
-                        changes.add(cell);
+                        return Optional.of(cell);
                     }
                 } else {
                     if (neighbours == 3) {
-                        changes.add(cell);
+                        return Optional.of(cell);
                     }
                 }
-                return null;
+                return Optional.empty();
             }
         }
 
-        List<Callable<Void>> tasks = new ArrayList<>();
+        var threads = Runtime.getRuntime().availableProcessors();
+        ExecutorService executor = Executors.newFixedThreadPool(threads);
+        List<Callable<Optional<Coordinates>>> tasks = new ArrayList<>();
+
         for (var cell : cellsToCheck) {
-            tasks.add(new Task(cell, aliveCells, cellsToCheck, changes));
+            tasks.add(new Task(cell, aliveCells));
         }
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
-        executor.invokeAll(tasks);
+        var futures = executor.invokeAll(tasks);
+        for (var future : futures) {
+            try {
+                future.get().ifPresent(changes::add);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         executor.shutdown();
 
         cellsToCheck.clear();
