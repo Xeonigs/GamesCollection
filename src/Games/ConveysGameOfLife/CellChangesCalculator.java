@@ -79,11 +79,11 @@ public class CellChangesCalculator implements StateChangeCalculator {
     private static int getNeighbours(Coordinates cell, Collection<Coordinates> aliveCells, int maxCount) {
         int neighbours = 0;
         for (var direction : DIRECTIONS) {
-            if (neighbours == maxCount) {
-                return neighbours;
-            }
             if (aliveCells.contains(cell.add(direction))) {
                 neighbours++;
+                if (neighbours == maxCount) {
+                    break;
+                }
             }
         }
         return neighbours;

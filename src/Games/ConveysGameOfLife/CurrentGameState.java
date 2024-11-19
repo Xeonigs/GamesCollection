@@ -6,8 +6,8 @@ public class CurrentGameState implements GameState {
     private boolean running;
     private int speed;
     private int pixelSize;
-    private Collection<Coordinates> aliveCells;
-    private Collection<Coordinates> cellsToCheck;
+    private final Collection<Coordinates> aliveCells;
+    private final Collection<Coordinates> cellsToCheck;
 
     static final int MIN_SPEED = 2;
     static final int MAX_SPEED = 1000;

@@ -43,9 +43,9 @@ public class ConveysGameOfLife {
         aliveCells.add(new Coordinates(0, 4));
          */
 
-
-        for (int i = 0; i < 2000; i++) {
-            for (int j = 0; j < 2000; j++) {
+        int size = 2000;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 if (Math.random() > 0.5) {
                     aliveCells.add(new Coordinates(j, i));
                 }
