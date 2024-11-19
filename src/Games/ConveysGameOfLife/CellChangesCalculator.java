@@ -42,7 +42,7 @@ public class CellChangesCalculator implements StateChangeCalculator {
 
             @Override
             public Collection<Coordinates> call() {
-                Collection<Coordinates> changes = new ArrayList<>();
+                Collection<Coordinates> changes = new LinkedList<>();
                 for (var cell : cells) {
                     int neighbours = getNeighbours(cell, aliveCells, 4);
                     if (aliveCells.contains(cell)) {
@@ -82,9 +82,7 @@ public class CellChangesCalculator implements StateChangeCalculator {
             try {
                 if (future.get() != null) {
                     var changesFromFuture = future.get();
-                    for (var change : changesFromFuture) {
-                        changes.add(change);
-                    }
+                    changes.addAll(changesFromFuture);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ExecutionException;
 
 public class ConveysGameOfLife {
     public void start() {
@@ -79,7 +80,14 @@ public class ConveysGameOfLife {
                 }
             }
 
-            cellState.changeQueuedChanges();
+            try {
+                cellState.changeQueuedChanges();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                break;
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }
             printer.repaint();
         }
     }
