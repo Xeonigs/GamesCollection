@@ -1,5 +1,6 @@
 package src.Games.ConveysGameOfLife;
 
+import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.*;
@@ -57,7 +58,7 @@ public class ConveysGameOfLife {
         StateChangeCalculator cellChanges = new CellChangesCalculator(aliveCells, cellsToCheck);
         MouseListener mouseListener = new FrameMouseListener(cellState, gameState);
         KeyListener keyboardListener = new FrameKeyboardListener(cellState, gameState);
-        FramePrinter printer = new FramePrinter(aliveCells, new Coordinates(250, 250), gameState, mouseListener, keyboardListener);
+        FramePrinter printer = new FramePrinter(aliveCells, new Dimension(1200, 800), gameState, mouseListener, keyboardListener);
 
         while (true) {
             if (gameState.isRunning()) {
