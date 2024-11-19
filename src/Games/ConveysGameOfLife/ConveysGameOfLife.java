@@ -67,7 +67,7 @@ public class ConveysGameOfLife {
             if (gameState.isRunning()) {
                 var changes = cellChanges.getChanges();
                 cellState.queueChanges(changes);
-                //sleep(gameState.getSpeed());
+                sleep(gameState.getSpeed());
             }
 
             cellState.changeQueuedChanges();
@@ -81,7 +81,7 @@ public class ConveysGameOfLife {
         timeBefore = timeNow;
         try {
             var sleepTime = Math.max(time - timeElapsed, 0);
-            Thread.sleep(0);
+            Thread.sleep(sleepTime);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
