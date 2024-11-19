@@ -7,8 +7,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 public class ConveysGameOfLife {
     public void start() {
-        Set<Coordinates> aliveCells = Collections.synchronizedSet(new TreeSet<>());
-        //Set<Coordinates> cellsToCheck = Collections.synchronizedSortedSet(new TreeSet<>());
+        Set<Coordinates> aliveCells = new ConcurrentSkipListSet<>();
         Set<Coordinates> cellsToCheck = new ConcurrentSkipListSet<>();
 
         GameState gameState = new CurrentGameState(false, 10, 10, aliveCells, cellsToCheck);
@@ -63,8 +62,13 @@ public class ConveysGameOfLife {
         while (true) {
             if (gameState.isRunning()) {
                 var timeBefore = System.currentTimeMillis();
-                var changes = cellChanges.getChanges();
-                cellState.queueChanges(changes);
+                try {
+                    var changes = cellChanges.getChanges();
+                    cellState.queueChanges(changes);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    break;
+                }
                 var timeElapsed = System.currentTimeMillis() - timeBefore;
                 try {
                     var sleepTime = Math.max(gameState.getSpeed() - (long)timeElapsed, 0);

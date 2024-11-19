@@ -1,6 +1,10 @@
 package src.Games.ConveysGameOfLife;
 
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CellChangesCalculator implements StateChangeCalculator {
     private final Collection<Coordinates> aliveCells;
@@ -22,25 +26,51 @@ public class CellChangesCalculator implements StateChangeCalculator {
     }
 
     @Override
-    public Collection<Coordinates> getChanges() {
-        Set<Coordinates> changes = new TreeSet<>();
-        for (var cell : cellsToCheck) {
-            int neighbours = getNeighbours(cell, 4);
-            if (aliveCells.contains(cell)) {
-                if (neighbours < 2 || neighbours > 3) {
-                    changes.add(cell);
+    public Collection<Coordinates> getChanges() throws InterruptedException {
+        Set<Coordinates> changes = new ConcurrentSkipListSet<>();
+
+        class Task implements Callable<Void> {
+            private final Coordinates cell;
+            private final Collection<Coordinates> aliveCells;
+            private final Collection<Coordinates> cellsToCheck;
+            private final Collection<Coordinates> changes;
+
+            public Task(Coordinates cell, Collection<Coordinates> aliveCells, Collection<Coordinates> cellsToCheck, Collection<Coordinates> changes) {
+                this.cell = cell;
+                this.aliveCells = aliveCells;
+                this.cellsToCheck = cellsToCheck;
+                this.changes = changes;
+            }
+
+            @Override
+            public Void call() {
+                int neighbours = getNeighbours(cell, aliveCells, 4);
+                if (aliveCells.contains(cell)) {
+                    if (neighbours < 2 || neighbours > 3) {
+                        changes.add(cell);
+                    }
+                } else {
+                    if (neighbours == 3) {
+                        changes.add(cell);
+                    }
                 }
-            } else {
-                if (neighbours == 3) {
-                    changes.add(cell);
-                }
+                return null;
             }
         }
+
+        List<Callable<Void>> tasks = new ArrayList<>();
+        for (var cell : cellsToCheck) {
+            tasks.add(new Task(cell, aliveCells, cellsToCheck, changes));
+        }
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
+        executor.invokeAll(tasks);
+        executor.shutdown();
+
         cellsToCheck.clear();
         return changes;
     }
 
-    private int getNeighbours(Coordinates cell, int maxCount) {
+    private static int getNeighbours(Coordinates cell, Collection<Coordinates> aliveCells, int maxCount) {
         int neighbours = 0;
         for (var direction : DIRECTIONS) {
             if (neighbours == maxCount) {
