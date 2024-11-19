@@ -9,13 +9,13 @@ import java.util.Collection;
 public class FramePrinter extends JPanel {
     private final Collection<Coordinates> aliveCells;
     private final GameState gameState;
-    private final Coordinates maxCoordinates;
+    private final Dimension windowSize;
     private final MouseListener mouseAdapter;
     private final KeyListener keyAdapter;
 
-    FramePrinter(Collection<Coordinates> aliveCells, Coordinates maxCoordinates, GameState gameState, MouseListener mouseAdapter, KeyListener keyAdapter) {
+    FramePrinter(Collection<Coordinates> aliveCells, Dimension windowSize, GameState gameState, MouseListener mouseAdapter, KeyListener keyAdapter) {
         this.aliveCells = aliveCells;
-        this.maxCoordinates = maxCoordinates;
+        this.windowSize = windowSize;
         this.gameState = gameState;
         this.mouseAdapter = mouseAdapter;
         this.keyAdapter = keyAdapter;
@@ -27,7 +27,8 @@ public class FramePrinter extends JPanel {
         JFrame jFrame = new JFrame();
         jFrame.add(this);
         jFrame.pack();
-        jFrame.setSize(maxCoordinates.x * gameState.getPixelSize(), maxCoordinates.y * gameState.getPixelSize());
+        jFrame.setResizable(false);
+        jFrame.setSize(windowSize);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setVisible(true);
         requestFocus();
@@ -43,8 +44,8 @@ public class FramePrinter extends JPanel {
         Color veryLightGray = new Color(230, 230, 230);
         g.setColor(veryLightGray);
         if (pos != null) {
-            g.fillRect(pos.x / gameState.getPixelSize() * gameState.getPixelSize(), 0, gameState.getPixelSize(), maxCoordinates.y * gameState.getPixelSize());
-            g.fillRect(0, pos.y / gameState.getPixelSize() * gameState.getPixelSize(), maxCoordinates.x * gameState.getPixelSize(), gameState.getPixelSize());
+            g.fillRect(pos.x / gameState.getPixelSize() * gameState.getPixelSize(), 0, gameState.getPixelSize(), windowSize.height);
+            g.fillRect(0, pos.y / gameState.getPixelSize() * gameState.getPixelSize(), windowSize.width, gameState.getPixelSize());
         }
 
         Color lightGray = new Color(200, 200, 200);
