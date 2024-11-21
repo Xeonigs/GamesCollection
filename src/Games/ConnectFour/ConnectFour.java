@@ -19,7 +19,7 @@ public class ConnectFour {
     public static final Color PLAYER_BLUE = new Color(0, 125, 255);
     public static final Color PLAYER_BLUE_HIGHLGHT = new Color(155, 184, 217);
 
-    public GUIObject loadGame(Class<? extends Player> player1Type, Class<? extends Player> player2Type) {
+    public GUIObject loadGame(Class<? extends Player> player1Type, Class<? extends Player> player2Type, Runnable returnToLobby) {
         Objects.requireNonNull(player1Type);
         Objects.requireNonNull(player2Type);
 
@@ -37,7 +37,7 @@ public class ConnectFour {
         }
         var turnHandler = new GameTurnHandler(player1, player2);
 
-        return new ConnectFourUserInterface(state, turnHandler, boardHandler, board);
+        return new ConnectFourUserInterface(state, turnHandler, boardHandler, board, returnToLobby);
     }
 
     private Player createPlayer(Class<? extends Player> playerClass, char symbol, Color color, Color highlightColor, Board board) {

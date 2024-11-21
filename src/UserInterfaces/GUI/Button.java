@@ -5,9 +5,12 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.Objects;
 
 public class Button implements GUIObject {
+    private static final Color BUTTON_COLOR = new Color(25, 25, 25, 150);
+    private static final Color BUTTON_HOVER_COLOR = new Color(75, 75, 75, 200);
+
     private final RoundRectangle2D roundedRectangle;
-    String text;
-    Runnable function;
+    private final String text;
+    private final Runnable function;
     public Button(Point position, Dimension size, float round, String text, Runnable function) {
         var roundValue = (int) (Math.min(size.width, size.height) * round);
         this.roundedRectangle = new RoundRectangle2D.Float(position.x, position.y, size.width, size.height, roundValue, roundValue);
@@ -17,8 +20,10 @@ public class Button implements GUIObject {
 
     @Override
     public void render(Graphics graphics, Point mousePos) {
+        graphics.setColor(BUTTON_COLOR);
+        graphics.fillRoundRect(roundedRectangle.getBounds().x, roundedRectangle.getBounds().y, roundedRectangle.getBounds().width, roundedRectangle.getBounds().height, (int) roundedRectangle.getArcWidth(), (int) roundedRectangle.getArcHeight());
         if (Objects.nonNull(mousePos) && intersects(mousePos)) {
-            graphics.setColor(Color.DARK_GRAY);
+            graphics.setColor(BUTTON_HOVER_COLOR);
             graphics.fillRoundRect(roundedRectangle.getBounds().x, roundedRectangle.getBounds().y, roundedRectangle.getBounds().width, roundedRectangle.getBounds().height, (int) roundedRectangle.getArcWidth(), (int) roundedRectangle.getArcHeight());
         }
         drawText(graphics, text);
