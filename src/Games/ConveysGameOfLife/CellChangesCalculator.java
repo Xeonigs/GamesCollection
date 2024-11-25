@@ -25,7 +25,7 @@ public class CellChangesCalculator implements StateChangeCalculator {
     public Collection<Coordinates> getChanges() {
         Set<Coordinates> changes = new TreeSet<>();
         for (var cell : cellsToCheck) {
-            int neighbours = getNeighbours(cell, 4);
+            int neighbours = countNeighbours(cell, 4);
             if (aliveCells.contains(cell)) {
                 if (neighbours < 2 || neighbours > 3) {
                     changes.add(cell);
@@ -40,14 +40,14 @@ public class CellChangesCalculator implements StateChangeCalculator {
         return changes;
     }
 
-    private int getNeighbours(Coordinates cell, int maxCount) {
+    private int countNeighbours(Coordinates cell, int maxCount) {
         int neighbours = 0;
         for (var direction : DIRECTIONS) {
-            if (neighbours == maxCount) {
-                return neighbours;
-            }
             if (aliveCells.contains(cell.add(direction))) {
                 neighbours++;
+                if (neighbours == maxCount) {
+                    return neighbours;
+                }
             }
         }
         return neighbours;

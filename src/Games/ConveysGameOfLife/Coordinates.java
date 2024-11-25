@@ -1,5 +1,8 @@
 package src.Games.ConveysGameOfLife;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class Coordinates implements Comparable<Coordinates> {
     public final int x, y;
     public Coordinates(int x, int y) {
@@ -9,6 +12,19 @@ public class Coordinates implements Comparable<Coordinates> {
 
     public Coordinates add(Coordinates other) {
         return new Coordinates(x + other.x, y + other.y);
+    }
+
+    public Collection<Coordinates> getNeighbours() {
+        Collection<Coordinates> neighbors = new ArrayList<>(8);
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+                neighbors.add(new Coordinates(x + i, y + j));
+            }
+        }
+        return neighbors;
     }
 
     @Override

@@ -10,11 +10,10 @@ public class ConveysGameOfLife {
     long timeBefore = System.currentTimeMillis();
 
     public void start() {
-        Set<Coordinates> aliveCells = Collections.synchronizedSet(new TreeSet<>());
-        //Set<Coordinates> cellsToCheck = Collections.synchronizedSortedSet(new TreeSet<>());
+        Set<Coordinates> aliveCells = new ConcurrentSkipListSet<>();
         Set<Coordinates> cellsToCheck = new ConcurrentSkipListSet<>();
 
-        GameState gameState = new CurrentGameState(false, 10, 10, aliveCells, cellsToCheck);
+        GameState gameState = new CurrentGameState(false, 10, 1, aliveCells, cellsToCheck);
 
         /*
         aliveCells.add(new Coordinates(1, 0));
@@ -47,7 +46,7 @@ public class ConveysGameOfLife {
         aliveCells.add(new Coordinates(0, 4));
          */
 
-        int size = 2000;
+        int size = 1000;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (Math.random() > 0.5) {
@@ -63,16 +62,18 @@ public class ConveysGameOfLife {
         KeyListener keyboardListener = new FrameKeyboardListener(cellState, gameState);
         FramePrinter printer = new FramePrinter(aliveCells, new Dimension(1200, 800), gameState, mouseListener, keyboardListener);
 
-        while (true) {
-            if (gameState.isRunning()) {
+        gameState.toggleRunning();
+        for (int i = 0; i < 5; i++) {
+            if (true) {
                 var changes = cellChanges.getChanges();
                 cellState.queueChanges(changes);
-                sleep(gameState.getSpeed());
+                //sleep(gameState.getSpeed());
             }
 
             cellState.changeQueuedChanges();
             printer.repaint();
         }
+        System.exit(0);
     }
 
     private void sleep(long time) {
