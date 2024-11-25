@@ -8,6 +8,8 @@ import src.Games.ConnectFour.GameLogic.Players.ComputerPlayer;
 import src.UserInterfaces.GUI.GUIObject;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
@@ -35,23 +37,23 @@ public class GraphicDiscField implements GUIObject {
     }
 
     @Override
-    public void keyTyped(char key) {
+    public void keyTyped(KeyEvent keyEvent) {
 
     }
 
     @Override
-    public void keyPressed(char key) {
+    public void keyPressed(KeyEvent keyEvent) {
 
     }
 
     @Override
-    public void keyReleased(char key) {
+    public void keyReleased(KeyEvent keyEvent) {
 
     }
 
     @Override
-    public void mouseClicked(Point mousePos) {
-        var isMouseInRectangle = Objects.nonNull(mousePos) && fieldRec.contains(mousePos);
+    public void mouseClicked(MouseEvent mouseEvent) {
+        var isMouseInRectangle = Objects.nonNull(mouseEvent) && fieldRec.contains(mouseEvent.getPoint());
         var isMoveValid = boardHandler.isMoveValid(column);
 
         if (isMouseInRectangle && isMoveValid) {
@@ -68,22 +70,22 @@ public class GraphicDiscField implements GUIObject {
     }
 
     @Override
-    public void mousePressed(Point mousePos) {
+    public void mousePressed(MouseEvent mouseEvent) {
 
     }
 
     @Override
-    public void mouseReleased(Point mousePos) {
+    public void mouseReleased(MouseEvent mouseEvent) {
 
     }
 
     @Override
-    public void mouseEntered(Point mousePos) {
+    public void mouseEntered(MouseEvent mouseEvent) {
 
     }
 
     @Override
-    public void mouseExited(Point mousePos) {
+    public void mouseExited(MouseEvent mouseEvent) {
 
     }
 

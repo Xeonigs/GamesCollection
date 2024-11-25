@@ -2,6 +2,8 @@ package src.UserInterfaces.GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -49,50 +51,42 @@ public class ApplicationPanel extends JPanel implements GUISwitcher {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        var key = e.getKeyChar();
-        currentGUI.keyTyped(key);
+        currentGUI.keyTyped(e);
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        var key = e.getKeyChar();
-        currentGUI.keyPressed(key);
+        currentGUI.keyPressed(e);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        var key = e.getKeyChar();
-        currentGUI.keyReleased(key);
+        currentGUI.keyReleased(e);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        var mousePos = getMousePosition();
-        currentGUI.mouseClicked(mousePos);
+        currentGUI.mouseClicked(e);
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        var mousePos = getMousePosition();
-        currentGUI.mousePressed(mousePos);
+        currentGUI.mousePressed(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        var mousePos = getMousePosition();
-        currentGUI.mouseReleased(mousePos);
+        currentGUI.mouseReleased(e);
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        var mousePos = getMousePosition();
-        currentGUI.mouseEntered(mousePos);
+        currentGUI.mouseEntered(e);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        var mousePos = getMousePosition();
-        currentGUI.mouseExited(mousePos);
+        currentGUI.mouseExited(e);
     }
 
     @Override

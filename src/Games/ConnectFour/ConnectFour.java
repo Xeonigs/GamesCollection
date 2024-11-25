@@ -35,16 +35,23 @@ public class ConnectFour {
         if (player2 instanceof MiniMaxPlayer miniMaxPlayer) {
             miniMaxPlayer.setOpponent(player1);
         }
-        var turnHandler = new GameTurnHandler(player1, player2);
+        var turnManager = new GameTurnHandler(player1, player2);
 
-        return new ConnectFourUserInterface(state, turnHandler, boardHandler, board, returnToLobby);
+
+        if (turnManager.getActivePlayer() instanceof ComputerPlayer computerPlayer) {
+            var move = computerPlayer.getMove();
+            boardHandler.makeMove(computerPlayer, move);
+            turnManager.changePlayer();
+        }
+
+        return new ConnectFourUserInterface(state, turnManager, boardHandler, board, returnToLobby);
     }
 
     private Player createPlayer(Class<? extends Player> playerClass, char symbol, Color color, Color highlightColor, Board board) {
         if (playerClass == RandomChoosePlayer.class) {
             return new RandomChoosePlayer(symbol, color, highlightColor);
         } else if (playerClass == MiniMaxPlayer.class) {
-            return new MiniMaxPlayer(symbol, color, highlightColor, board, 7);
+            return new MiniMaxPlayer(symbol, color, highlightColor, board, 9);
         } else if (playerClass == HumanPlayer.class) {
             return new HumanPlayer(symbol, color, highlightColor);
         } else {

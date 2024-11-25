@@ -11,6 +11,8 @@ import src.UserInterfaces.GUI.GUIObject;
 import src.UserInterfaces.GUI.Menus.Menu;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 
 public class ConnectFourUserInterface implements GUIObject {
@@ -40,50 +42,50 @@ public class ConnectFourUserInterface implements GUIObject {
     }
 
     @Override
-    public void keyTyped(char key) {
-        if (key == 'm') {
+    public void keyTyped(KeyEvent keyEvent) {
+        if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE) {
             showMenu = !showMenu;
         }
     }
 
     @Override
-    public void keyPressed(char key) {
+    public void keyPressed(KeyEvent keyEvent) {
 
     }
 
     @Override
-    public void keyReleased(char key) {
+    public void keyReleased(KeyEvent keyEvent) {
 
     }
 
     @Override
-    public void mouseClicked(Point mousePos) {
+    public void mouseClicked(MouseEvent mouseEvent) {
         if (showMenu) {
-            menu.mouseClicked(mousePos);
+            menu.mouseClicked(mouseEvent);
         } else {
             if (state.isRunning() && turnManager.getActivePlayer() instanceof HumanPlayer) {
-                graphicBoard.mouseClicked(mousePos);
+                graphicBoard.mouseClicked(mouseEvent);
             }
         }
     }
 
     @Override
-    public void mousePressed(Point mousePos) {
+    public void mousePressed(MouseEvent mouseEvent) {
 
     }
 
     @Override
-    public void mouseReleased(Point mousePos) {
+    public void mouseReleased(MouseEvent mouseEvent) {
 
     }
 
     @Override
-    public void mouseEntered(Point mousePos) {
+    public void mouseEntered(MouseEvent mouseEvent) {
 
     }
 
     @Override
-    public void mouseExited(Point mousePos) {
+    public void mouseExited(MouseEvent mouseEvent) {
 
     }
 

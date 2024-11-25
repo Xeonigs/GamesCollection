@@ -4,6 +4,8 @@ import src.UserInterfaces.GUI.ApplicationPanel;
 import src.UserInterfaces.GUI.GUIObject;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.Collection;
 
 public class Menu implements GUIObject {
@@ -30,43 +32,43 @@ public class Menu implements GUIObject {
     }
 
     @Override
-    public void keyTyped(char key) {
+    public void keyTyped(KeyEvent keyEvent) {
 
     }
 
     @Override
-    public void keyPressed(char key) {
+    public void keyPressed(KeyEvent keyEvent) {
 
     }
 
     @Override
-    public void keyReleased(char key) {
+    public void keyReleased(KeyEvent keyEvent) {
 
     }
 
     @Override
-    public void mouseClicked(Point mousePos) {
+    public void mouseClicked(MouseEvent mouseEvent) {
         for (var ob : guiObjects) {
-            ob.mouseClicked(mousePos);
+            ob.mouseClicked(mouseEvent);
         }
     }
 
     @Override
-    public void mousePressed(Point mousePos) {
+    public void mousePressed(MouseEvent mouseEvent) {
     }
 
     @Override
-    public void mouseReleased(Point mousePos) {
-
-    }
-
-    @Override
-    public void mouseEntered(Point mousePos) {
+    public void mouseReleased(MouseEvent mouseEvent) {
 
     }
 
     @Override
-    public void mouseExited(Point mousePos) {
+    public void mouseEntered(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) {
 
     }
 }

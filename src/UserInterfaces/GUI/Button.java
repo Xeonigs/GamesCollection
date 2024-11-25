@@ -1,6 +1,8 @@
 package src.UserInterfaces.GUI;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Objects;
 
@@ -30,44 +32,44 @@ public class Button implements GUIObject {
     }
 
     @Override
-    public void keyTyped(char key) {
+    public void keyTyped(KeyEvent keyEvent) {
 
     }
 
     @Override
-    public void keyPressed(char key) {
+    public void keyPressed(KeyEvent keyEvent) {
 
     }
 
     @Override
-    public void keyReleased(char key) {
+    public void keyReleased(KeyEvent keyEvent) {
 
     }
 
     @Override
-    public void mouseClicked(Point mousePos) {
-        if (intersects(mousePos)) {
+    public void mouseClicked(MouseEvent mouseEvent) {
+        if (intersects(mouseEvent.getPoint())) {
             function.run();
         }
     }
 
     @Override
-    public void mousePressed(Point mousePos) {
+    public void mousePressed(MouseEvent mouseEvent) {
 
     }
 
     @Override
-    public void mouseReleased(Point mousePos) {
+    public void mouseReleased(MouseEvent mouseEvent) {
 
     }
 
     @Override
-    public void mouseEntered(Point mousePos) {
+    public void mouseEntered(MouseEvent mouseEvent) {
 
     }
 
     @Override
-    public void mouseExited(Point mousePos) {
+    public void mouseExited(MouseEvent mouseEvent) {
 
     }
     

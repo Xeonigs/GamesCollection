@@ -3,7 +3,7 @@ import src.UserInterfaces.GUI.Menus.UserInterfaceComposition;
 
 public class Main {
     public static void main(String[] args) {
-        //new UserInterfaceComposition().run();
-        new ConveysGameOfLife().start();
+        new UserInterfaceComposition().run();
+        //new ConveysGameOfLife().start();
     }
 }
