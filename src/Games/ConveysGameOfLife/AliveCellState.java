@@ -1,13 +1,12 @@
 package src.Games.ConveysGameOfLife;
 
 import java.util.Collection;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class AliveCellState implements StateHandler {
-    private Collection<Coordinates> aliveCells;
-    private Queue<Coordinates> queuedChanges = new LinkedBlockingQueue<>();
-    private Collection<Coordinates> cellsToCheck;
+    private final Collection<Coordinates> queuedChanges = new ConcurrentLinkedDeque<>();
+    private final Collection<Coordinates> aliveCells;
+    private final Collection<Coordinates> cellsToCheck;
 
     public AliveCellState(Collection<Coordinates> aliveCells, Collection<Coordinates> cellsToCheck) {
         this.aliveCells = aliveCells;
@@ -16,23 +15,16 @@ public class AliveCellState implements StateHandler {
 
     @Override
     public synchronized void changeQueuedChanges() {
-        while (!queuedChanges.isEmpty()) {
-            var cell = queuedChanges.poll();
-            if (changeCell(cell)) {
-                cellsToCheck.add(cell);
-                for (var direction : CellChangesCalculator.DIRECTIONS) {
-                    cellsToCheck.add(cell.add(direction));
-                }
-            }
-        }
+        queuedChanges.parallelStream().forEach(this::changeCell);
+        queuedChanges.clear();
     }
 
-    private boolean changeCell(Coordinates cell) {
-        if (aliveCells.contains(cell)) {
-            return aliveCells.remove(cell);
-        } else {
-            return aliveCells.add(cell);
+    private void changeCell(Coordinates cell) {
+        if (!aliveCells.add(cell)) {
+            aliveCells.remove(cell);
         }
+        cellsToCheck.add(cell);
+        cellsToCheck.addAll(cell.getNeighbours());
     }
 
     @Override
@@ -42,6 +34,6 @@ public class AliveCellState implements StateHandler {
 
     @Override
     public void queueChanges(Collection<Coordinates> cells) {
-        queuedChanges.addAll(cells);
+        cells.parallelStream().forEach(this::queueChange);
     }
 }

@@ -4,14 +4,14 @@ import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.*;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ConveysGameOfLife {
     long timeBefore = System.currentTimeMillis();
 
     public void start() {
-        Set<Coordinates> aliveCells = new ConcurrentSkipListSet<>();
-        Set<Coordinates> cellsToCheck = new ConcurrentSkipListSet<>();
+        Set<Coordinates> aliveCells = ConcurrentHashMap.newKeySet(Short.MAX_VALUE);
+        Set<Coordinates> cellsToCheck = ConcurrentHashMap.newKeySet();;
 
         GameState gameState = new CurrentGameState(false, 10, 1, aliveCells, cellsToCheck);
 
@@ -33,7 +33,7 @@ public class ConveysGameOfLife {
         }
          */
 
-        /*
+/*
         aliveCells.add(new Coordinates(7, 0));
         aliveCells.add(new Coordinates(5, 0));
         aliveCells.add(new Coordinates(5, 1));
@@ -44,12 +44,13 @@ public class ConveysGameOfLife {
         aliveCells.add(new Coordinates(1, 4));
         aliveCells.add(new Coordinates(1, 5));
         aliveCells.add(new Coordinates(0, 4));
-         */
+        */
 
         int size = 1000;
+        Random random = new Random(69420);
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (Math.random() > 0.5) {
+                if (random.nextDouble() > 0.5) {
                     aliveCells.add(new Coordinates(j, i));
                 }
             }
@@ -62,9 +63,12 @@ public class ConveysGameOfLife {
         KeyListener keyboardListener = new FrameKeyboardListener(cellState, gameState);
         FramePrinter printer = new FramePrinter(aliveCells, new Dimension(1200, 800), gameState, mouseListener, keyboardListener);
 
+
         gameState.toggleRunning();
-        for (int i = 0; i < 5; i++) {
-            if (true) {
+        cellState.queueChanges(cellChanges.getChanges());
+        cellState.changeQueuedChanges();
+        for (int i = 0; i < 10; i++) {
+            if (gameState.isRunning()) {
                 var changes = cellChanges.getChanges();
                 cellState.queueChanges(changes);
                 //sleep(gameState.getSpeed());

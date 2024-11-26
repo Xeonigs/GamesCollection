@@ -31,12 +31,10 @@ public class CurrentGameState implements GameState {
     @Override
     public void toggleRunning() {
         if (!running) {
-            for (var cell : aliveCells) {
+            aliveCells.parallelStream().forEach(cell -> {
                 cellsToCheck.add(cell);
-                for (var direction : CellChangesCalculator.DIRECTIONS) {
-                    cellsToCheck.add(cell.add(direction));
-                }
-            }
+                cellsToCheck.addAll(cell.getNeighbours());
+            });
         } else {
             synchronized (cellsToCheck) {
                 cellsToCheck.clear();

@@ -42,6 +42,6 @@ public class Coordinates implements Comparable<Coordinates> {
 
     @Override
     public int hashCode() {
-        return x * 31 + y;
+        return x * 524_287 + y;
     }
 }
