@@ -4,14 +4,14 @@ import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 
 public class ConveysGameOfLife {
     long timeBefore = System.currentTimeMillis();
 
     public void start() {
-        Set<Coordinates> aliveCells = ConcurrentHashMap.newKeySet(Short.MAX_VALUE);
-        Set<Coordinates> cellsToCheck = ConcurrentHashMap.newKeySet();;
+        Collection<Coordinates> aliveCells = ConcurrentHashMap.newKeySet(Short.MAX_VALUE);
+        Collection<Coordinates> cellsToCheck = ConcurrentHashMap.newKeySet(Short.MAX_VALUE);
 
         GameState gameState = new CurrentGameState(false, 10, 1, aliveCells, cellsToCheck);
 
@@ -67,7 +67,7 @@ public class ConveysGameOfLife {
         gameState.toggleRunning();
         cellState.queueChanges(cellChanges.getChanges());
         cellState.changeQueuedChanges();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             if (gameState.isRunning()) {
                 var changes = cellChanges.getChanges();
                 cellState.queueChanges(changes);

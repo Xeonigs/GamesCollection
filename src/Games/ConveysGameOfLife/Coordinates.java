@@ -42,6 +42,13 @@ public class Coordinates implements Comparable<Coordinates> {
 
     @Override
     public int hashCode() {
-        return x * 524_287 + y;
+        final int prime1 = 0x9e3779b9; // Large prime (Golden ratio)
+        final int prime2 = 0x85ebca6b; // Another large prime
+
+        int h = x;
+        h ^= y + prime1 + (h << 6) + (h >> 2); // Mix x and y
+        h *= prime2; // Spread values with prime multiplication
+
+        return h;
     }
 }

@@ -18,12 +18,12 @@ public class CellChangesCalculator implements StateChangeCalculator {
                 filter(this::isCellToChange).
                 collect(Collectors.toList());
 
-        cellsToCheck.clear();
+        cellsToCheck.parallelStream().forEach(cellsToCheck::remove);
         return changes;
     }
 
     private boolean isCellToChange(Coordinates cell) {
-        int neighbours = countNeighbours(cell, 4);
+        int neighbours = countNeighbours(cell);
         if (aliveCells.contains(cell)) {
             return neighbours < 2 || neighbours > 3;
         } else {
@@ -31,17 +31,17 @@ public class CellChangesCalculator implements StateChangeCalculator {
         }
     }
 
-    private int countNeighbours(Coordinates cell, int maxCount) {
-        int neighbours = 0;
+    private int countNeighbours(Coordinates cell) {
+        int count = 0;
         for (var neighbour : cell.getNeighbours()) {
             if (aliveCells.contains(neighbour)) {
-                neighbours++;
-                if (neighbours == maxCount) {
-                    return neighbours;
+                count++;
+                if (count >= 4) {
+                    return count;
                 }
             }
         }
-        return neighbours;
+        return count;
     }
 }
 
